@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: file:; media-src file: blob:;">
+    <title>BackupFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme">
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-logo-container">
+            <img src="assets/LOGO.png" alt="BACKUPFLOW" class="splash-logo">
+            <span id="splashVersion" class="splash-version"></span>
+        </div>
+    </div>
+    <!-- Barre supérieure pour le drag de la fenêtre (macOS affiche ses propres traffic lights natifs) -->
+    <div class="title-bar"></div>
+    
+    <div class="app-container">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-brand">
+                <img src="assets/LOGO.png" alt="BACKUPFLOW" class="app-logo">
+                <span id="appVersion" class="app-version"></span>
+            </div>
+            <nav class="top-bar-nav">
+                <button class="nav-btn active" data-view="home">
+                    <span>ACCUEIL</span>
+                </button>
+                <button class="nav-btn" data-view="workflow">
+                    <span>WORKFLOW</span>
+                </button>
+                <button class="nav-btn" data-view="batch">
+                    <span>QUEUE BATCH</span>
+                </button>
+                <button class="nav-btn" data-view="settings">
+                    <span>PARAMÈTRES</span>
+                </button>
+                <button class="nav-btn" data-view="history">
+                    <span>HISTORIQUE</span>
+                </button>
+            </nav>
+            <div class="top-bar-actions">
+                <div id="nasIndicator" class="nas-indicator" title="État de la connexion NAS">
+                    <span id="nasIndicatorDot" class="nas-dot nas-dot-grey"></span>
+                    <span id="nasIndicatorLabel">NAS</span>
+                </div>
+                <button id="themeToggle" class="theme-toggle">MODE SOMBRE</button>
+                <button id="quitBtn" class="quit-btn">QUITTER</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- En-tête de profil personnalisé -->
+            <div id="profileHeader" class="profile-header" style="display: none;">
+                <div class="profile-header-content">
+                    <div class="profile-header-info">
+                        <div id="profileHeaderPhoto" class="profile-header-photo" style="cursor: pointer;" title="Modifier le profil"></div>
+                        <div class="profile-header-text">
+                            <h2 id="profileHeaderName">Nom du profil</h2>
+                            <span id="profileHeaderInitiales" class="profile-header-initiales">"MP"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vue Accueil -->
+            <div id="homeView" class="view active">
+                <div class="home-container">
+                    <h2>Choisissez votre profil</h2>
+                    <p class="home-subtitle">Sélectionnez un profil pour pré-remplir vos informations de projet</p>
+                    
+                    <div id="profilesGrid" class="profiles-grid">
+                        <!-- Les profils seront ajoutés dynamiquement ici -->
+                    </div>
+                    
+                    <div class="home-actions">
+                        <button id="addProfileBtn" class="btn btn-primary">Ajouter un profil</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vue Workflow -->
+            <div id="workflowView" class="view">
+                <div class="workflow-container">
+                    <h2>Workflow de Backup</h2>
+                    
+                    <!-- Étape 1: Informations du projet -->
+                    <section class="workflow-step" data-step="1">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <h3>Informations du projet</h3>
+                            <span class="step-status" id="step1Status"></span>
+                        </div>
+                        <div class="step-content">
+                            <div id="multicamBandeau" class="multicam-bandeau" style="display: none;">
+                                <span class="multicam-badge">MODE MULTICAM</span>
+                                <span id="multicamProjectName" class="multicam-project-name"></span>
+                                <span id="gofileDisabledMultiCam" class="multicam-gofile-disabled" style="margin-left: auto;">Gofile désactivé en mode MultiCam</span>
+                            </div>
+                            <div class="monday-mode-toggle-wrapper">
+                                <span class="monday-mode-label">Source du projet</span>
+                                <div class="toggle-pill toggle-pill-3" id="mondayModeToggle" data-mode="monday" role="radiogroup" aria-label="Source du projet">
+                                    <span class="toggle-option" data-mode="monday">MONDAY</span>
+                                    <span class="toggle-option" data-mode="manual">MANUEL</span>
+                                    <span class="toggle-option" data-mode="organizer" id="organizerToggleOption">ORGANIZER</span>
+                                    <span class="toggle-slider"></span>
+                                </div>
+                            </div>
+                            <div id="mondayProjectSection" class="monday-project-section">
+                                <div class="form-group">
+                                    <label for="mondayProjectSelect">Projet Monday</label>
+                                    <select id="mondayProjectSelect" class="select">
+                                        <option value="">-- Sélectionner un projet --</option>
+                                    </select>
+                                    <div id="mondayProjectStatus" class="monday-status-msg"></div>
+                                    <div id="mondayBackedUpMention" class="monday-backed-up-mention" style="display: none;">Projets backupés inclus</div>
+                                    <button type="button" id="mondayRetryBtn" class="btn btn-secondary btn-sm monday-retry-btn" style="display: none;">Réessayer</button>
+                                    <div id="existingProjectBandeau" class="existing-project-bandeau" style="display: none;">
+                                        <span class="existing-project-icon"></span>
+                                        <span>Projet déjà backupé — un dossier existe : <strong class="existing-project-name"></strong></span>
+                                        <div class="existing-project-actions">
+                                            <button type="button" id="btnNewProject" class="btn btn-secondary btn-sm">Nouveau projet</button>
+                                            <button type="button" id="btnAddSession" class="btn btn-primary btn-sm">Ajouter une session → SESSION_02</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="sessionBandeau" class="session-bandeau" style="display: none;">
+                                <span class="session-badge">MODE SESSION</span>
+                                <span>Ajout de <strong class="session-folder-name"></strong> dans : <span class="session-parent-name"></span></span>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="projectFormat">Format *</label>
+                                    <select id="projectFormat" class="select" required>
+                                        <option value="">-- Sélectionner --</option>
+                                        <option value="BP">BP - Reco</option>
+                                        <option value="CEXP">CEXP - Campus Explorer</option>
+                                        <option value="ITW">ITW - L'interview</option>
+                                        <option value="ITR">ITR - L'interro</option>
+                                        <option value="SELEC">SELEC - La sélection de l'Etudiant</option>
+                                        <option value="CQUOI">CQUOI - C'est quoi?</option>
+                                        <option value="SCH">SCH - Anecdote</option>
+                                        <option value="REC">REC - Le récit</option>
+                                        <option value="ATE">ATE - Audrey t'explique</option>
+                                        <option value="MT">MT - Micro Trottoir</option>
+                                        <option value="ADLE">ADLE - Actu</option>
+                                        <option value="DDLE">DDLE - Décryptage</option>
+                                        <option value="CDLE">CDLE - Conseil</option>
+                                        <option value="AS">AS - Au salon</option>
+                                        <option value="TD3M">TD3M - Ton Diplôme en 3 minutes</option>
+                                        <option value="EME">EME - Etudes, mode d'emploi</option>
+                                        <option value="TEASER">TEASER - Teaser</option>
+                                        <option value="PROMO">PROMO - Promo</option>
+                                        <option value="DOC">DOC - Le doc de l'Etudiant</option>
+                                        <option value="REP">REP - Reportage</option>
+                                        <option value="TEST">TEST - Test</option>
+                                        <option value="CORR">CORR - Corrigé</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="projectSujet">Sujet *</label>
+                                    <input type="text" id="projectSujet" class="input" placeholder="ex: Orelsan" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="projectInitiales">Initiales *</label>
+                                    <input type="text" id="projectInitiales" class="input" placeholder="ex: AP" maxlength="5" required>
+                                </div>
+                            </div>
+                            <div class="project-name-preview">
+                                <label>Nom du projet généré:</label>
+                                <div id="projectNamePreview" class="project-name-display">--</div>
+                            </div>
+                            <div id="manualAddSessionSection" class="manual-add-session-section" style="display: none;">
+                                <button type="button" id="btnManualAddSession" class="btn btn-secondary btn-sm btn-manual-add-session">Ajouter une session à un projet existant →</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Étape 2: Sélection des fichiers -->
+                    <section class="workflow-step" data-step="2">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <h3>Sélection des fichiers</h3>
+                            <span class="step-status" id="step2Status"></span>
+                        </div>
+                        <div class="step-content">
+                            <div id="step2Classic" class="step2-content">
+                                <div class="file-selection-buttons">
+                                    <button id="selectFilesBtn" class="btn btn-primary">Sélectionner fichiers</button>
+                                </div>
+                                <div id="filesList" class="files-list"></div>
+                            </div>
+                            <div id="step2MultiCam" class="step2-multicam-content" style="display: none;">
+                                <div class="multicam-summary">
+                                    <p class="multicam-summary-intro">Le dossier projet complet sera copié tel quel.</p>
+                                    <div id="multicamSourcePath" class="multicam-source-path"></div>
+                                    <div id="multicamFoldersList" class="multicam-folders-list"></div>
+                                    <div id="multicamTotalSize" class="multicam-total-size"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Étape 3: Vérification -->
+                    <section class="workflow-step" data-step="3">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <h3>Vérification</h3>
+                            <span class="step-status" id="step3Status"></span>
+                        </div>
+                        <div class="step-content">
+                            <div id="verificationInfo" class="verification-info"></div>
+                        </div>
+                    </section>
+
+                    <!-- Actions -->
+                    <div class="workflow-actions">
+                        <button id="startWorkflowBtn" class="btn btn-success btn-large" disabled>
+                            Démarrer le workflow
+                        </button>
+                        <button id="addToBatchBtn" class="btn btn-secondary btn-large" disabled>
+                            Ajouter à la queue BATCH
+                        </button>
+                        <button id="cancelWorkflowBtn" class="btn btn-danger btn-large" style="display: none;">
+                            Annuler
+                        </button>
+                    </div>
+
+                    <!-- Progression -->
+                    <div id="workflowProgress" class="workflow-progress" style="display: none;">
+                        <h3>Progression du workflow</h3>
+                        
+                        <!-- Barre de progression globale -->
+                        <div class="global-progress-container">
+                            <div class="global-progress-info">
+                                <span id="globalProgressText" class="global-progress-percent">0%</span>
+                                <span id="globalProgressDetails" class="progress-details"></span>
+                            </div>
+                            <div class="progress-bar-container global-bar">
+                                <div id="globalProgressBar" class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Détails par étape -->
+                        <div id="progressSteps" class="progress-steps"></div>
+                        
+                        <!-- Résumé final -->
+                        <div id="workflowSummary" class="workflow-summary" style="display: none;">
+                            <h4>Workflow terminé</h4>
+                            <div id="summaryContent" class="summary-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue Paramètres -->
+            <div id="settingsView" class="view">
+                <h2>Paramètres</h2>
+                <div class="settings-container">
+                    <section class="settings-section">
+                        <h3 class="settings-section-toggle" data-collapsed="true"><span class="settings-chevron">▶</span> Destinations</h3>
+                        <div class="settings-section-body" style="display:none">
+                        <div class="form-group">
+                            <label>SSD PERSO (dossiers projets)</label>
+                            <div class="path-input-group">
+                                <input type="text" id="ssdPersoPath" class="input path-input" readonly>
+                                <button class="btn btn-secondary" id="selectSSDPersoBtn">Parcourir</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>SSD STUDIO (fichiers à la racine)</label>
+                            <div class="path-input-group">
+                                <input type="text" id="ssdStudioPath" class="input path-input" readonly>
+                                <button class="btn btn-secondary" id="selectSSDStudioBtn">Parcourir</button>
+                            </div>
+                        </div>
+                        </div>
+                    </section>
+
+                    <section class="settings-section">
+                        <h3 class="settings-section-toggle" data-collapsed="true"><span class="settings-chevron">▶</span> Connexion NAS</h3>
+                        <div class="settings-section-body" style="display:none">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Protocole</label>
+                            <select id="nasProtocol" class="select">
+                                <option value="smb" selected>SMB (Recommandé)</option>
+                                <option value="sftp">SFTP/SSH</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Configuration SMB -->
+                        <div id="smbConfig">
+                            <div class="form-group">
+                                <label>URL SMB *</label>
+                                <input type="text" id="nasSMBURL" class="input" 
+                                       placeholder="smb://srvfiler01.etudiant.lan/Video"
+                                       value="smb://srvfiler01.etudiant.lan/Video">
+                                <small style="color: var(--text-secondary); margin-top: 5px; display: block;">
+                                    Format: smb://serveur/partage. Le partage doit être monté dans Finder avant l'upload.
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label>Dossier de destination NAS *</label>
+                                <div class="path-input-group">
+                                    <input type="text" id="nasSMBRemotePath" class="input path-input" value="/" readonly>
+                                    <button type="button" class="btn btn-secondary" id="selectNASFolderBtn">Parcourir</button>
+                                </div>
+                                <small style="color: var(--text-secondary); margin-top: 5px; display: block;">
+                                    Dossier où seront déposés les fichiers ZIP. Montez d'abord le partage SMB dans Finder.
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <!-- Configuration SFTP -->
+                        <div id="sftpConfig" style="display: none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Hôte</label>
+                                    <input type="text" id="nasHost" class="input" placeholder="192.168.1.100">
+                                </div>
+                                <div class="form-group">
+                                    <label>Port</label>
+                                    <input type="number" id="nasPort" class="input" value="22">
+                                </div>
+                                <div class="form-group">
+                                    <label>Utilisateur</label>
+                                    <input type="text" id="nasUsername" class="input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mot de passe</label>
+                                    <input type="password" id="nasPassword" class="input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Chemin distant</label>
+                                    <input type="text" id="nasRemotePath" class="input" value="/backups">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="testNASBtn" class="btn btn-secondary">Tester la connexion</button>
+
+                        <div class="nas-connector-section">
+                            <h4>Connexion NAS</h4>
+                            <div class="form-group">
+                                <label>Nom du VPN FortiClient</label>
+                                <input type="text" id="vpnName" class="input" placeholder="ex: L'Etudiant VPN">
+                                <small style="color: var(--text-secondary); margin-top: 5px; display: block;">Nom de la connexion VPN telle qu'elle apparait dans FortiClient.</small>
+                            </div>
+                            <p class="nas-auto-instruction">Connecte-toi a VPN_ETUDIANT dans FortiClient — BackUpFlow monte le NAS automatiquement</p>
+                            <div class="nas-connector-status">
+                                <div class="nas-status-row">
+                                    <span class="nas-status-indicator" id="vpnStatusIndicator" data-status="unknown"></span>
+                                    <span class="nas-status-label" id="vpnStatusLabel">VPN : inconnu</span>
+                                </div>
+                                <div class="nas-status-row">
+                                    <span class="nas-status-indicator" id="nasStatusIndicator" data-status="unknown"></span>
+                                    <span class="nas-status-label" id="nasStatusLabel">NAS : inconnu</span>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </section>
+
+                    <section class="settings-section">
+                        <h3 class="settings-section-toggle" data-collapsed="true"><span class="settings-chevron">▶</span> Options workflow</h3>
+                        <div class="settings-section-body" style="display:none">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="settingsCompress" checked>
+                            <span>Compresser les videos avec HandBrake</span>
+                        </label>
+                        <label class="checkbox-label" style="margin-top: 10px;">
+                            <input type="checkbox" id="settingsUploadNAS" checked>
+                            <span>Uploader vers NAS apres compression</span>
+                        </label>
+                        <label class="checkbox-label" style="margin-top: 10px;">
+                            <input type="checkbox" id="settingsVerifyIntegrity" checked>
+                            <span>Verifier l'integrite des fichiers (checksums)</span>
+                        </label>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>Extensions video autorisees</label>
+                            <div id="allowedExtensionsTags" class="extension-tags"></div>
+                            <div class="extension-add-row">
+                                <input type="text" id="newExtensionInput" class="input" placeholder=".mxf" style="max-width: 120px;">
+                                <button type="button" id="addExtensionBtn" class="btn btn-secondary btn-sm">Ajouter</button>
+                            </div>
+                            <small style="color: var(--text-secondary); margin-top: 5px; display: block;">
+                                Seuls les fichiers avec ces extensions seront retenus lors du scan. Les fichiers de moins de 1 Mo et ceux commencant par "Rendered - " sont exclus.
+                            </small>
+                        </div>
+                        </div>
+                    </section>
+
+                    <section class="settings-section">
+                        <h3 class="settings-section-toggle" data-collapsed="true"><span class="settings-chevron">▶</span> Gofile</h3>
+                        <div class="settings-section-body" style="display:none">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="gofileAutoUpload">
+                            <span>Envoyer automatiquement vers Gofile après chaque workflow réussi</span>
+                        </label>
+                        <small style="color: var(--text-secondary); margin-top: 8px; display: block;">
+                            Si activé, le dossier projet (SSD Studio) sera envoyé vers Gofile à la fin du workflow, sans action manuelle.
+                        </small>
+                        </div>
+                    </section>
+
+                    <section class="settings-section">
+                        <h3 class="settings-section-toggle" data-collapsed="true"><span class="settings-chevron">▶</span> Monday.com (Tableau suivi de production)</h3>
+                        <div class="settings-section-body" style="display:none">
+                        <div class="form-group">
+                            <label>Clé API Monday</label>
+                            <input type="password" id="mondayApiToken" class="input" placeholder="Collez votre token API Monday" autocomplete="off">
+                            <small style="color: var(--text-secondary); margin-top: 5px; display: block;">
+                                Permet d'associer un backup à un projet du tableau de suivi de production. Vous pouvez modifier ou remplacer cette clé.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label>Board ID Monday</label>
+                            <input type="text" id="mondayBoardId" class="input" placeholder="ex: 1234567890" autocomplete="off">
+                            <a href="#" id="mondayBoardIdHelp" class="monday-help-link">Comment trouver mon Board ID ?</a>
+                        </div>
+                        <div class="monday-connection-test">
+                            <button type="button" id="testMondayBtn" class="btn btn-secondary">Tester la connexion</button>
+                            <div id="mondayTestResult" class="monday-test-result" style="display: none;"></div>
+                        </div>
+                        </div>
+                    </section>
+
+                    <section id="adminSection" class="settings-section" style="display:none;">
+                        <h3 class="settings-section-toggle" data-collapsed="true">
+                            <span class="settings-chevron">&#9654;</span> Administration
+                        </h3>
+                        <div class="settings-section-body" style="display:none;">
+                            <div class="settings-section-item">
+                                <label>Clé API Resend</label>
+                                <div style="display:flex;gap:8px;">
+                                    <input type="password" id="resendApiKey" class="input" placeholder="re_xxxxxxxxxxxx">
+                                    <button class="btn btn-secondary btn-sm" id="testResendBtn">Tester</button>
+                                </div>
+                                <small style="color:var(--text-secondary);margin-top:4px;display:block;">
+                                    Utilisée pour les notifications mail automatiques.
+                                </small>
+                                <div id="resendTestResult" style="margin-top:6px;font-size:0.85em;"></div>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+                            <div class="settings-section-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="organizerModeEnabledToggle">
+                                    <span>Activer le mode Organizer (MultiCam) — fonctionnalité expérimentale V2</span>
+                                </label>
+                                <small style="color:var(--text-secondary);margin-top:4px;display:block;">
+                                    Affiche l'option d'import Organizer dans le workflow.
+                                </small>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+                            <div id="archivedProfilesList"></div>
+                        </div>
+                    </section>
+
+                    <button id="saveSettingsBtn" class="btn btn-success">Enregistrer les paramètres</button>
+                </div>
+            </div>
+
+            <!-- Vue Workflow en cours -->
+            <div id="workflowRunningView" class="view" style="display: none;">
+                <!-- Barre de progression globale ancrée -->
+                <div id="globalProgressSticky" class="global-progress-sticky">
+                    <div class="global-progress-sticky-content">
+                        <div class="global-progress-sticky-header">
+                            <div class="global-progress-sticky-title">
+                                <span id="globalProgressPhaseLabel">Progrès global</span>
+                                <span id="runningGlobalProgressPercent" class="global-progress-percent-sticky">0%</span>
+                            </div>
+                            <div class="global-progress-sticky-eta">
+                                <span id="globalETA" class="global-eta">Calcul...</span>
+                            </div>
+                        </div>
+                        <div class="global-progress-sticky-bar-wrapper">
+                            <div class="global-progress-sticky-bar" id="runningGlobalProgressBar" style="width: 0%;"></div>
+                        </div>
+                        <div class="global-progress-sticky-details">
+                            <span id="globalProgressDetails" class="global-progress-details">Initialisation...</span>
+                            <span id="globalProgressData" class="global-progress-data">0 / 0 MB</span>
+                        </div>
+                    </div>
+                </div>
+                
+                    <div class="stop-workflow-container">
+                        <button id="stopWorkflowBtn" class="btn btn-secondary btn-stop-workflow">Arrêter le workflow</button>
+                    </div>
+                    <div class="workflow-running-container">
+                    <div id="multicamProgressLevels" class="multicam-progress-levels" style="display: none;">
+                        <div class="multicam-level-2">
+                            <span class="multicam-level-label">Dossier en cours :</span>
+                            <span id="multicamCurrentFolder" class="multicam-current-folder">—</span>
+                            <span id="multicamFolderProgress" class="multicam-folder-progress">0 / 0 fichiers</span>
+                        </div>
+                        <div class="multicam-level-3">
+                            <span class="multicam-level-label">Fichier :</span>
+                            <span id="multicamCurrentFile" class="multicam-current-file">—</span>
+                            <span id="multicamFileSize" class="multicam-file-size"></span>
+                            <div class="multicam-file-progress-bar">
+                                <div id="multicamFileProgressBar" class="multicam-file-progress-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="multicam-level-4">
+                            <span id="multicamSpeed" class="multicam-speed">— Mo/s</span>
+                            <span id="multicamETA" class="multicam-eta">ETA —</span>
+                            <span id="multicamElapsed" class="multicam-elapsed">Temps écoulé —</span>
+                        </div>
+                    </div>
+                    <div class="workflow-progress workflow-sections" id="runningWorkflowProgress">
+                        <div id="workflowSectionCopy" class="workflow-section">
+                            <h3 class="workflow-section-title">COPIE</h3>
+                            <div id="workflowSectionCopyTasks" class="workflow-section-tasks"></div>
+                            <div id="fileTodoCopy" class="file-todo-list"></div>
+                        </div>
+                        <div id="workflowSectionGofile" class="workflow-section workflow-section-gofile">
+                            <h3 class="workflow-section-title">ENVOI GOFILE</h3>
+                            <div id="workflowSectionGofileTasks" class="workflow-section-tasks"></div>
+                            <div id="fileTodoGofile" class="file-todo-list"></div>
+                        </div>
+                        <div id="workflowSectionCompress" class="workflow-section">
+                            <h3 class="workflow-section-title">COMPRESSION</h3>
+                            <div id="workflowSectionCompressTasks" class="workflow-section-tasks"></div>
+                            <div id="fileTodoCompress" class="file-todo-list"></div>
+                        </div>
+                        <div id="workflowSectionNas" class="workflow-section">
+                            <h3 class="workflow-section-title">TRANSFERT VERS LE NAS</h3>
+                            <div id="workflowSectionNasTasks" class="workflow-section-tasks"></div>
+                            <div id="fileTodoNas" class="file-todo-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue Workflow interrompu -->
+            <div id="workflowAbortedView" class="view" style="display: none;">
+                <div class="workflow-aborted-container">
+                    <div class="workflow-aborted-icon">&#9724;</div>
+                    <h2 class="workflow-aborted-title">Workflow interrompu</h2>
+                    <p class="workflow-aborted-subtitle">
+                        Le backup a été arrêté manuellement avant d'être terminé.
+                    </p>
+                    <div id="workflowAbortedProjectName" class="workflow-aborted-project"></div>
+                    <div class="workflow-aborted-files-choice">
+                        <p class="workflow-aborted-files-label">
+                            Des fichiers ont peut-être déjà été copiés vers les destinations.
+                        </p>
+                        <div class="workflow-aborted-actions">
+                            <button id="workflowAbortedDeleteBtn" class="btn btn-secondary">
+                                Supprimer les fichiers copiés
+                            </button>
+                            <button id="workflowAbortedKeepBtn" class="btn btn-primary">
+                                Conserver les fichiers copiés
+                            </button>
+                        </div>
+                        <button id="workflowAbortedQuitBtn" class="btn btn-danger"
+                            style="margin-top: 12px; width: 100%;">
+                            Quitter l'application
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue Workflow terminé -->
+            <div id="workflowCompletedView" class="view" style="display: none;">
+                <h2>Workflow terminé</h2>
+                <div class="workflow-completed-container">
+                    <!-- Conteneur pour le GIF aléatoire -->
+                    <div id="celebrationGifContainer" class="celebration-gif-container">
+                        <img id="celebrationGif" src="" alt="Celebration" class="celebration-gif" style="display: none;">
+                    </div>
+                    <div class="workflow-completed-actions">
+                        <button id="returnToWorkflowBtn" class="btn btn-primary">RETOUR À L'ACCUEIL</button>
+                        <button id="closeWorkflowBtn" class="btn btn-secondary">QUITTER</button>
+                    </div>
+                    <div id="mondayUpdateErrorMsg" class="monday-update-error-msg" style="display:none;" role="alert"></div>
+
+                    <div id="gofile-section" class="gofile-section" style="display:none;">
+                        <hr class="gofile-divider">
+                        <button id="btn-gofile" class="btn btn-secondary gofile-btn">
+                            Envoyer vers Gofile
+                        </button>
+                        <div id="gofile-progress-zone" class="gofile-progress-zone" style="display:none;">
+                            <div class="gofile-progress-bar-track">
+                                <div id="gofile-progress-bar" class="gofile-progress-bar-fill" style="width:0%"></div>
+                            </div>
+                            <span id="gofile-progress-label" class="gofile-progress-label">Préparation…</span>
+                        </div>
+                        <div id="gofile-result-zone" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue Queue BATCH -->
+            <div id="batchView" class="view" style="display: none;">
+                <div class="batch-container">
+                    <h2>Queue BATCH</h2>
+                    <p class="batch-subtitle">Gérez plusieurs workflows qui s'exécuteront automatiquement les uns après les autres</p>
+                    
+                    <div class="batch-controls">
+                        <button id="startBatchBtn" class="btn btn-success" disabled>
+                            Démarrer la queue
+                        </button>
+                        <button id="stopBatchBtn" class="btn btn-danger" style="display: none;">
+                            Arrêter le batch
+                        </button>
+                        <button id="clearBatchBtn" class="btn btn-danger" disabled>
+                            Vider la queue
+                        </button>
+                    </div>
+                    
+                    <div id="batchQueueList" class="batch-queue-list">
+                        <p style="color: var(--text-secondary); text-align: center; padding: 40px;">
+                            Aucun workflow dans la queue. Ajoutez des workflows depuis la page Workflow.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vue Batch terminé -->
+            <div id="batchCompleteView" class="view" style="display: none;">
+                <div class="workflow-completed-container">
+                    <div id="batchCelebrationGifContainer" class="celebration-gif-container">
+                        <img id="batchCelebrationGif" src="" alt="Celebration" class="celebration-gif" style="display: none;">
+                    </div>
+                    <h2>Batch termine</h2>
+                    <div id="batchCompleteRecap" class="batch-complete-recap"></div>
+                    <div class="workflow-completed-actions" style="margin-top: 24px;">
+                        <button id="newBatchBtn" class="btn btn-primary">Nouveau batch</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue Historique -->
+            <div id="historyView" class="view">
+                <div class="history-header-section">
+                    <h2>Historique des opérations</h2>
+                    <div class="history-actions">
+                        <select id="historyProfileFilter" class="select" style="margin-right: 10px; width: auto;">
+                            <option value="">Tous les profils</option>
+                        </select>
+                        <button id="refreshHistoryBtn" class="btn btn-primary">Actualiser</button>
+                        <button id="clearHistoryBtn" class="btn btn-danger" style="margin-left: 10px;">Effacer l'historique</button>
+                    </div>
+                </div>
+                
+                <div id="historyContainer" class="history-container"></div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal alerte espace disque insuffisant -->
+    <div id="diskSpaceAlertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Espace disque insuffisant</h3>
+            </div>
+            <div class="modal-body">
+                <p class="disk-space-alert-intro">Le workflow ne peut pas démarrer : il n'y a pas assez d'espace sur un ou plusieurs disques de destination.</p>
+                <p class="disk-space-alert-action">Veuillez libérer de l'espace sur le(s) disque(s) concerné(s) puis réessayer.</p>
+                <div id="diskSpaceAlertDetails" class="disk-space-alert-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="diskSpaceAlertOkBtn" class="btn btn-primary">J'ai compris</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal espace disque insuffisant MultiCam -->
+    <div id="multicamDiskSpaceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Espace disque insuffisant</h3>
+            </div>
+            <div class="modal-body">
+                <div id="multicamDiskSpaceDetails" class="disk-space-alert-details"></div>
+                <p class="disk-space-alert-action">Vous pouvez désactiver cette cible dans les Options ou libérer de l'espace.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="multicamDiskSpaceRevoirBtn" class="btn btn-secondary">Revoir les options</button>
+                <button id="multicamDiskSpaceRetryBtn" class="btn btn-primary">Vérifier à nouveau</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de fermeture pendant workflow -->
+    <div id="quitConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Workflow en cours</h3>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; color: var(--text-primary);">
+                    Un workflow est actuellement en cours d'exécution. Si vous quittez maintenant, le processus sera interrompu.
+                </p>
+                <p style="margin-bottom: 24px; color: var(--text-secondary); font-size: 0.95em;">
+                    Êtes-vous sûr de vouloir quitter l'application ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="quitConfirmCancelBtn" class="btn btn-secondary">Annuler</button>
+                <button id="quitConfirmOkBtn" class="btn btn-danger">Quitter quand même</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal NAS inaccessible -->
+    <div id="nasAlertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>NAS inaccessible</h3>
+            </div>
+            <div class="modal-body">
+                <p>Le partage NAS n'est pas accessible. Vérifiez que le VPN est connecté et que le NAS est monté.</p>
+                <div id="nasAlertReconnectStatus" class="nas-reconnect-status" style="display: none;">
+                    <div class="nas-reconnect-bar-wrapper">
+                        <div class="nas-reconnect-bar" id="nasReconnectBar"></div>
+                    </div>
+                    <span id="nasReconnectLabel">Tentative 1/3</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="nasAlertProtocolBtn" class="btn btn-primary">Lancer le protocole de connexion</button>
+                <button id="nasAlertSkipBtn" class="btn btn-secondary">Continuer sans NAS</button>
+                <button id="nasAlertCancelBtn" class="btn btn-danger">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de création/édition de profil -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="profileModalTitle">Nouveau profil</h3>
+                <button class="modal-close" id="closeProfileModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nom du profil *</label>
+                    <input type="text" id="profileName" class="input" placeholder="Ex: Martin, Alice, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label>Initiales *</label>
+                    <input type="text" id="profileInitiales" class="input" placeholder="MP" maxlength="5" style="text-transform: uppercase;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="profileEmail">Adresse e-mail</label>
+                    <input type="email" id="profileEmail" class="input" placeholder="prenom.nom@letudiant.fr">
+                </div>
+                
+                <div class="form-group">
+                    <label>Destination disque perso (SSD Perso)</label>
+                    <div class="path-input-group">
+                        <input type="text" id="profileSSDPersoPath" class="input path-input" readonly>
+                        <button type="button" class="btn btn-secondary" id="selectProfileSSDPersoBtn">Parcourir</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Destination disque studio (SSD Studio)</label>
+                    <div class="path-input-group">
+                        <input type="text" id="profileSSDStudioPath" class="input path-input" readonly placeholder="Par défaut : dossier des Paramètres">
+                        <button type="button" class="btn btn-secondary" id="selectProfileSSDStudioBtn">Parcourir</button>
+                        <button type="button" class="btn btn-ghost" id="resetProfileSSDStudioBtn" title="Utiliser le dossier des Paramètres">Réinitialiser</button>
+                    </div>
+                    <small style="color: var(--text-secondary); margin-top: 5px; display: block;">
+                        Si vide, le dossier défini dans Paramètres sera utilisé. Utile pour les tests avec un dossier différent.
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Photo de profil</label>
+                    <div class="profile-photo-section">
+                        <div id="profilePhotoPreview" class="profile-photo-preview">
+                            <span></span>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary" id="selectProfilePhotoBtn">Choisir une photo</button>
+                            <button type="button" class="btn btn-secondary" id="removeProfilePhotoBtn" style="display: none;">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Palette de couleurs personnalisée</label>
+                    <div class="color-palette-group">
+                        <div class="color-picker-item">
+                            <label>Couleur principale</label>
+                            <input type="color" id="profileColor1" class="color-picker" value="#2563eb">
+                        </div>
+                        <div class="color-picker-item">
+                            <label>Couleur secondaire</label>
+                            <input type="color" id="profileColor2" class="color-picker" value="#0f172a">
+                        </div>
+                        <div class="color-picker-item">
+                            <label>Couleur accent</label>
+                            <input type="color" id="profileColor3" class="color-picker" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mode par défaut</label>
+                    <select id="profileTheme" class="select">
+                        <option value="dark">Sombre</option>
+                        <option value="light">Clair</option>
+                    </select>
+                    <small style="color: var(--text-secondary); margin-top: 5px; display: block;">
+                        Ce mode sera appliqué automatiquement lorsque ce profil est sélectionné
+                    </small>
+                </div>
+                
+                <input type="hidden" id="profileId">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelProfileBtn">Annuler</button>
+                <button class="btn btn-primary" id="saveProfileBtn">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale de confirmation d'arrêt du workflow (étape 1) -->
+    <div id="stopWorkflowConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Arrêter le workflow ?</h3>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; color: var(--text-primary);">
+                    Le processus en cours sera interrompu immédiatement.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="stopWorkflowCancelBtn" class="btn btn-secondary">Annuler</button>
+                <button id="stopWorkflowConfirmBtn" class="btn btn-primary">Confirmer l'arrêt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale de confirmation d'arrêt du batch -->
+    <div id="stopBatchConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Arrêter le batch ?</h3>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; color: var(--text-primary);">
+                    Le workflow en cours sera interrompu immédiatement. Les workflows restants ne seront pas lancés.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="stopBatchCancelBtn" class="btn btn-secondary">Annuler</button>
+                <button id="stopBatchConfirmBtn" class="btn btn-danger">Confirmer l'arrêt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale d'erreur universelle -->
+    <div id="errorModal" class="modal" style="display:none">
+        <div class="modal-content error-modal-content">
+            <div class="modal-header error-modal-header">
+                <h3 id="errorModalTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <p id="errorModalVulgarized" class="error-vulgarized"></p>
+                <div class="error-technical">
+                    <span class="error-technical-label">Erreur technique :</span>
+                    <code id="errorModalTechnical"></code>
+                </div>
+                <div class="error-accordion">
+                    <button class="error-accordion-toggle" id="errorAccordionToggle">
+                        > En savoir plus
+                    </button>
+                    <div id="errorAccordionContent" class="error-accordion-content" style="display:none">
+                        <div class="error-causes">
+                            <p class="error-section-label">Causes probables :</p>
+                            <ul id="errorModalCauses"></ul>
+                        </div>
+                        <div class="error-steps">
+                            <p class="error-section-label">Première approche :</p>
+                            <ol id="errorModalSteps"></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer error-modal-footer">
+                <div id="errorModalActions"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio pour le jingle d'ouverture -->
+    <audio id="jingleMatin" preload="auto">
+        <source src="assets/JINGLE BCUPFLX.wav" type="audio/wav">
+    </audio>
+    <audio id="jingleMidi" preload="auto">
+        <source src="assets/JINGLE_MIDI.wav" type="audio/wav">
+    </audio>
+    <audio id="jingleAprem" preload="auto">
+        <source src="assets/JINGLE_APREM.wav" type="audio/wav">
+    </audio>
+    <audio id="jingleSoir" preload="auto">
+        <source src="assets/JINGLE_SOIR.wav" type="audio/wav">
+    </audio>
+
+    <script>
+      (function() {
+        const _d = new Date();
+        const _dd = String(_d.getDate()).padStart(2, '0');
+        const _mm = String(_d.getMonth() + 1).padStart(2, '0');
+        const _yy = String(_d.getFullYear()).slice(-2);
+        window.APP_VERSION = 'V1.' + _dd + '.' + _mm + '.' + _yy;
+      })();
+    </script>
+    <div id="changelogModal" class="modal" style="display:none;">
+        <div class="modal-content changelog-modal-content">
+            <div class="modal-header">
+                <h3>Notes de version</h3>
+            </div>
+            <div class="modal-body">
+                <div id="changelogContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="document.getElementById('changelogModal').style.display='none'">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gofileWarningModal" class="modal">
+      <div class="modal-content" style="max-width: 480px;">
+        <div class="modal-header">
+          <h3>Backup sauvegardé — Gofile échoué</h3>
+          <button class="modal-close" id="gofileWarningCloseX">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="margin: 0 0 16px;">
+            Ton backup est bien enregistré sur les SSD.<br>
+            L'envoi vers Gofile a échoué — aucun lien de partage
+            ne sera disponible pour ce projet.
+          </p>
+          <button id="gofileWarningToggleLog" class="btn btn-secondary" style="font-size: 0.85em; padding: 6px 12px;">Voir le log</button>
+          <div id="gofileWarningLogBlock" style="display: none; margin-top: 12px; padding: 12px; background: var(--bg-tertiary); border-radius: var(--radius); font-family: 'SF Mono', monospace; font-size: 0.78em; color: var(--text-secondary); word-break: break-all; max-height: 160px; overflow-y: auto;">
+            <pre id="gofileWarningLog" style="margin: 0; white-space: pre-wrap;"></pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="gofileWarningCloseBtn" class="btn btn-primary">Continuer</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="videoPreviewModal" class="modal">
+      <div class="modal-content" id="videoPreviewContent" style="padding: 0; overflow: hidden;">
+        <div class="modal-header" style="padding: 16px 20px;">
+          <h3 id="videoPreviewTitle" style="font-size: 0.85em; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 600px; text-transform: none; letter-spacing: 0;">Aperçu</h3>
+          <button class="modal-close" id="closeVideoPreviewModal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 0; background: #000;">
+          <video id="videoPreviewPlayer" controls autoplay style="width: 100%; display: block;"></video>
+        </div>
+      </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

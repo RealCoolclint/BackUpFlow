@@ -1,0 +1,71 @@
+{
+  "name": "backupflow",
+  "version": "1.0.0",
+  "description": "Application macOS pour automatiser le workflow de backup, stockage, compression et archivage de fichiers vidéo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "dist": "electron-builder --mac --publish=never"
+  },
+  "keywords": [
+    "video",
+    "backup",
+    "handbrake",
+    "postproduction",
+    "workflow"
+  ],
+  "author": "Martin Pavloff",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "form-data": "^4.0.5",
+    "fs-extra": "^11.2.0",
+    "node-notifier": "^10.0.1",
+    "resend": "^6.9.2",
+    "ssh2-sftp-client": "^10.0.3"
+  },
+  "build": {
+    "asar": false,
+    "npmRebuild": false,
+    "appId": "fr.letudiant.backupflow",
+    "productName": "BackUpFlow Studio",
+    "copyright": "Copyright © 2025 L'Étudiant",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [{ "target": "dir" }],
+      "icon": "build/icon.icns"
+    },
+    "dmg": {
+      "title": "BackUpFlow Studio",
+      "sign": false,
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer.js",
+      "styles.css",
+      "modules/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "!node_modules/fsevents/**",
+      "!data/**",
+      "!**/*.md",
+      "!.git/**",
+      "!.cursor/**",
+      "!*.command",
+      "!install-handbrake.sh"
+    ]
+  }
+}
