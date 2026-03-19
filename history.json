@@ -1,0 +1,1701 @@
+{
+  "operations": [
+    {
+      "id": "1773935836683",
+      "timestamp": "2026-03-19T15:57:16.683Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2782349225",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "type": "backup",
+      "projectName": "260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 156665279,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773935836676",
+      "timestamp": "2026-03-19T15:57:16.676Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2782349225",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "type": "upload",
+      "projectName": "260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC"
+      }
+    },
+    {
+      "id": "1773935797434",
+      "timestamp": "2026-03-19T15:56:37.434Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2782349225",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "type": "backup",
+      "projectName": "260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "DDLE_CLASSEMENT_VILLE_ETUDIANTES_01.mp4",
+          "size": 156665279
+        }
+      ],
+      "totalSize": 156665279,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773931280456",
+      "timestamp": "2026-03-19T14:41:20.456Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2788422989",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "type": "backup",
+      "projectName": "260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 374533535,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773931280450",
+      "timestamp": "2026-03-19T14:41:20.450Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2788422989",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "type": "upload",
+      "projectName": "260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260319C_DDLE_IA_GENZ_DEBILE_MDN"
+      }
+    },
+    {
+      "id": "1773931192990",
+      "timestamp": "2026-03-19T14:39:52.990Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2788422989",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "type": "backup",
+      "projectName": "260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "DDLE_IA_GENZ_DEBILE 01.mp4",
+          "size": 374533535
+        }
+      ],
+      "totalSize": 374533535,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773929655422",
+      "timestamp": "2026-03-19T14:14:15.422Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2788438962",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "type": "backup",
+      "projectName": "260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 651361988,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773929655416",
+      "timestamp": "2026-03-19T14:14:15.416Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2788438962",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "type": "upload",
+      "projectName": "260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260319B_CDLE_AIDES_CROUS_INCONNUES_TC"
+      }
+    },
+    {
+      "id": "1773929529286",
+      "timestamp": "2026-03-19T14:12:09.286Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2788438962",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "type": "backup",
+      "projectName": "260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "CDLE_AIDE_CROUS_INCONNUE 01.mp4",
+          "size": 651361988
+        }
+      ],
+      "totalSize": 651361988,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773919635910",
+      "timestamp": "2026-03-19T11:27:15.910Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2788708173",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "type": "backup",
+      "projectName": "260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 1384966866,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773919635903",
+      "timestamp": "2026-03-19T11:27:15.903Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2788708173",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "type": "upload",
+      "projectName": "260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC"
+      }
+    },
+    {
+      "id": "1773919337695",
+      "timestamp": "2026-03-19T11:22:17.695Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2788708173",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "type": "backup",
+      "projectName": "260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "DDLE_IMPACT_NATALITE_EDUCATION_01.mp4",
+          "size": 1216132585
+        },
+        {
+          "name": "DDLE_IMPACT_NATALITE_EDUCATION_02.mp4",
+          "size": 168834281
+        }
+      ],
+      "totalSize": 1384966866,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773335200408",
+      "timestamp": "2026-03-12T17:06:40.408Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2723629208",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "type": "backup",
+      "projectName": "260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 75016212556,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773335200400",
+      "timestamp": "2026-03-12T17:06:40.400Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2723629208",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "type": "upload",
+      "projectName": "260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP"
+      }
+    },
+    {
+      "id": "1773331167770",
+      "timestamp": "2026-03-12T15:59:27.770Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2723629208",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "type": "backup",
+      "projectName": "260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "C5787_ITW.MP4",
+          "size": 18589592222
+        },
+        {
+          "name": "C5769_ITW.MP4",
+          "size": 18522482704
+        },
+        {
+          "name": "C5786_ITW.MP4",
+          "size": 18186933102
+        },
+        {
+          "name": "C5768_ITW.MP4",
+          "size": 18186932270
+        },
+        {
+          "name": "DOC_PRECARITE 02_ITW.MP4",
+          "size": 780047269
+        },
+        {
+          "name": "DOC_PRECARITE 01_ITW.MP4",
+          "size": 750224989
+        }
+      ],
+      "totalSize": 75016212556,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773322997484",
+      "timestamp": "2026-03-12T13:43:17.484Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": null,
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "type": "backup",
+      "projectName": "260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 321485211,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773322997475",
+      "timestamp": "2026-03-12T13:43:17.475Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": null,
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "type": "upload",
+      "projectName": "260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260312B_DOC_SELFIE_CLEM_PRECARITE_MP"
+      }
+    },
+    {
+      "id": "1773322924465",
+      "timestamp": "2026-03-12T13:42:04.465Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": null,
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "type": "backup",
+      "projectName": "260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "DOC_SELFIE_CLEM_PRECARITE 01.mp4",
+          "size": 321485211
+        }
+      ],
+      "totalSize": 321485211,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773319366122",
+      "timestamp": "2026-03-12T12:42:46.122Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2769201721",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "type": "backup",
+      "projectName": "260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 27750435591,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773319366116",
+      "timestamp": "2026-03-12T12:42:46.116Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2769201721",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "type": "upload",
+      "projectName": "260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM"
+      }
+    },
+    {
+      "id": "1773318233486",
+      "timestamp": "2026-03-12T12:23:53.486Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2769201721",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "type": "backup",
+      "projectName": "260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "C5796.MP4",
+          "size": 4093737477
+        },
+        {
+          "name": "C5800.MP4",
+          "size": 4093737477
+        },
+        {
+          "name": "C5797.MP4",
+          "size": 4093737292
+        },
+        {
+          "name": "C5798.MP4",
+          "size": 4093737292
+        },
+        {
+          "name": "C5801.MP4",
+          "size": 4093737292
+        },
+        {
+          "name": "C5802.MP4",
+          "size": 3422638572
+        },
+        {
+          "name": "C5805.MP4",
+          "size": 637580245
+        },
+        {
+          "name": "C5807.MP4",
+          "size": 637580245
+        },
+        {
+          "name": "C5799.MP4",
+          "size": 604025334
+        },
+        {
+          "name": "C5804.MP4",
+          "size": 469805775
+        },
+        {
+          "name": "C5809.MP4",
+          "size": 469805647
+        },
+        {
+          "name": "C5808.MP4",
+          "size": 402695693
+        },
+        {
+          "name": "C5806.MP4",
+          "size": 335586031
+        },
+        {
+          "name": "C5803.MP4",
+          "size": 302031219
+        }
+      ],
+      "totalSize": 27750435591,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773317749748",
+      "timestamp": "2026-03-12T12:15:49.748Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2776133257",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "type": "backup",
+      "projectName": "260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 548339489,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773317749741",
+      "timestamp": "2026-03-12T12:15:49.741Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2776133257",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "type": "upload",
+      "projectName": "260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM"
+      }
+    },
+    {
+      "id": "1773317625231",
+      "timestamp": "2026-03-12T12:13:45.231Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2776133257",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "type": "backup",
+      "projectName": "260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "CDLE_RYTHMES_SCOLAIRES 02.mp4",
+          "size": 413446250
+        },
+        {
+          "name": "CDLE_RYTHMES_SCOLAIRES 01.mp4",
+          "size": 134893239
+        }
+      ],
+      "totalSize": 548339489,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773317526967",
+      "timestamp": "2026-03-12T12:12:06.967Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2776127984",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "type": "backup",
+      "projectName": "260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 605246200,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773317526960",
+      "timestamp": "2026-03-12T12:12:06.960Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2776127984",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "type": "upload",
+      "projectName": "260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM"
+      }
+    },
+    {
+      "id": "1773317424158",
+      "timestamp": "2026-03-12T12:10:24.158Z",
+      "profileId": "1762027871566jszcebbcm",
+      "mondayItemId": "2776127984",
+      "projectFolderPath": "/Volumes/SSD LISA/RUSHS_BACKUPFLOW/260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "type": "backup",
+      "projectName": "260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "CDLE_APPLIS_DEDIEES_ETUDIANTES 02.mp4",
+          "size": 368925753
+        },
+        {
+          "name": "CDLE_APPLIS_DEDIEES_ETUDIANTES 01.mp4",
+          "size": 177492446
+        },
+        {
+          "name": "CDLE_APPLIS_DEDIEES_ETUDIANTES 03.mp4",
+          "size": 58828001
+        }
+      ],
+      "totalSize": 605246200,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773310986804",
+      "timestamp": "2026-03-12T10:23:06.804Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2731699278",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260312A_ITW_ALFRED_CHATILLON_MP",
+      "type": "backup",
+      "projectName": "260312A_ITW_ALFRED_CHATILLON_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 1304945619,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773310986797",
+      "timestamp": "2026-03-12T10:23:06.797Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2731699278",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260312A_ITW_ALFRED_CHATILLON_MP",
+      "type": "upload",
+      "projectName": "260312A_ITW_ALFRED_CHATILLON_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260312A_ITW_ALFRED_CHATILLON_MP"
+      }
+    },
+    {
+      "id": "1773310780905",
+      "timestamp": "2026-03-12T10:19:40.905Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2731699278",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260312A_ITW_ALFRED_CHATILLON_MP",
+      "type": "backup",
+      "projectName": "260312A_ITW_ALFRED_CHATILLON_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "ITW_ALFRED_CHATILLON 01.mp4",
+          "size": 1304945619
+        }
+      ],
+      "totalSize": 1304945619,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773242819397",
+      "timestamp": "2026-03-11T15:26:59.397Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 1743227910,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773242819390",
+      "timestamp": "2026-03-11T15:26:59.390Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260315A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1773242661691",
+      "timestamp": "2026-03-11T15:24:21.691Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "260219A_DDLE_PAUVRETÉ_TC_3.mp4",
+          "size": 1684184368
+        },
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 1743227910,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773240263689",
+      "timestamp": "2026-03-11T14:44:23.689Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 1743227910,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773240263683",
+      "timestamp": "2026-03-11T14:44:23.683Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260315A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1773240065896",
+      "timestamp": "2026-03-11T14:41:05.896Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "260219A_DDLE_PAUVRETÉ_TC_3.mp4",
+          "size": 1684184368
+        },
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 1743227910,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773234158627",
+      "timestamp": "2026-03-11T13:02:38.627Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773234158620",
+      "timestamp": "2026-03-11T13:02:38.620Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260315A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1773234124138",
+      "timestamp": "2026-03-11T13:02:04.138Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773151800669",
+      "timestamp": "2026-03-10T14:10:00.669Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2729136576",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260310A_ITW_BLEU_SOLEIL_MP",
+      "type": "backup",
+      "projectName": "260310A_ITW_BLEU_SOLEIL_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 1304520527,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1773151800661",
+      "timestamp": "2026-03-10T14:10:00.661Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2729136576",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260310A_ITW_BLEU_SOLEIL_MP",
+      "type": "upload",
+      "projectName": "260310A_ITW_BLEU_SOLEIL_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260310A_ITW_BLEU_SOLEIL_MP"
+      }
+    },
+    {
+      "id": "1773151647512",
+      "timestamp": "2026-03-10T14:07:27.512Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2729136576",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260310A_ITW_BLEU_SOLEIL_MP",
+      "type": "backup",
+      "projectName": "260310A_ITW_BLEU_SOLEIL_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "ITW_BLEU SOLEIL 01.mp4",
+          "size": 1294557368
+        },
+        {
+          "name": "ITW_BLEU SOLEIL 02.mp4",
+          "size": 9963159
+        }
+      ],
+      "totalSize": 1304520527,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1773151010874",
+      "timestamp": "2026-03-10T13:56:50.874Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2729136576",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260310A_ITW_BLEU_SOLEIL_MP",
+      "type": "backup",
+      "projectName": "260310A_ITW_BLEU_SOLEIL_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "ITW_BLEU SOLEIL CAM 1 01.mp4",
+          "size": 5873297989
+        },
+        {
+          "name": "ITW_BLEU SOLEIL 02.mp4",
+          "size": 9963159
+        }
+      ],
+      "totalSize": 5883261148,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772727632753",
+      "timestamp": "2026-03-05T16:20:32.753Z",
+      "profileId": "17620274114058o6qg2c5n",
+      "mondayItemId": "2761623541",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772727632746",
+      "timestamp": "2026-03-05T16:20:32.746Z",
+      "profileId": "17620274114058o6qg2c5n",
+      "mondayItemId": "2761623541",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP"
+      }
+    },
+    {
+      "id": "1772727603811",
+      "timestamp": "2026-03-05T16:20:03.811Z",
+      "profileId": "17620274114058o6qg2c5n",
+      "mondayItemId": "2761623541",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772725979232",
+      "timestamp": "2026-03-05T15:52:59.232Z",
+      "profileId": "1762027832543tkvmqrvir",
+      "mondayItemId": "2758728899",
+      "projectFolderPath": "/Volumes/DISQUE DUR CHARLYNE/RUSHS BACKUP/260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "type": "backup",
+      "projectName": "260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 3116774436,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772725979223",
+      "timestamp": "2026-03-05T15:52:59.223Z",
+      "profileId": "1762027832543tkvmqrvir",
+      "mondayItemId": "2758728899",
+      "projectFolderPath": "/Volumes/DISQUE DUR CHARLYNE/RUSHS BACKUP/260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "type": "upload",
+      "projectName": "260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260305B_DDLE_TIER_LIST_REFORMES_CF"
+      }
+    },
+    {
+      "id": "1772725738195",
+      "timestamp": "2026-03-05T15:48:58.195Z",
+      "profileId": "1762027832543tkvmqrvir",
+      "mondayItemId": "2758728899",
+      "projectFolderPath": "/Volumes/DISQUE DUR CHARLYNE/RUSHS BACKUP/260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "type": "backup",
+      "projectName": "260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "DDLE_TIER_LIST_REFORMES CAM 1 01.mp4",
+          "size": 2591016149
+        },
+        {
+          "name": "DDLE_TIER_LIST_REFORMES 01.mp4",
+          "size": 525758287
+        }
+      ],
+      "totalSize": 3116774436,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772724359355",
+      "timestamp": "2026-03-05T15:25:59.355Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2761628321",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "type": "backup",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772724359346",
+      "timestamp": "2026-03-05T15:25:59.346Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2761628321",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "type": "upload",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN"
+      }
+    },
+    {
+      "id": "1772724328458",
+      "timestamp": "2026-03-05T15:25:28.458Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2761628321",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "type": "backup",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772723430894",
+      "timestamp": "2026-03-05T15:10:30.894Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2761628321",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "type": "backup",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772723430887",
+      "timestamp": "2026-03-05T15:10:30.887Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2761628321",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "type": "upload",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN"
+      }
+    },
+    {
+      "id": "1772723402619",
+      "timestamp": "2026-03-05T15:10:02.619Z",
+      "profileId": "1762027921739tt06r3j9d",
+      "mondayItemId": "2761628321",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "type": "backup",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772722385257",
+      "timestamp": "2026-03-05T14:53:05.257Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 784347415,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772722385248",
+      "timestamp": "2026-03-05T14:53:05.248Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "upload",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260305A_CDLE_FUTURNESS_VIDEO_3_MP"
+      }
+    },
+    {
+      "id": "1772722261396",
+      "timestamp": "2026-03-05T14:51:01.396Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "CDLE_FUTURNESS_EP03 02.mp4",
+          "size": 401446233
+        },
+        {
+          "name": "CDLE_FUTURNESS_EP03 01.mp4",
+          "size": 382901182
+        }
+      ],
+      "totalSize": 784347415,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772720628272",
+      "timestamp": "2026-03-05T14:23:48.272Z",
+      "profileId": "17620274114058o6qg2c5n",
+      "mondayItemId": "2761623541",
+      "projectFolderPath": "/Users/studiovideo/Desktop/Zone de test/260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "type": "backup",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772720628265",
+      "timestamp": "2026-03-05T14:23:48.265Z",
+      "profileId": "17620274114058o6qg2c5n",
+      "mondayItemId": "2761623541",
+      "projectFolderPath": "/Users/studiovideo/Desktop/Zone de test/260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "type": "upload",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP"
+      }
+    },
+    {
+      "id": "1772720598507",
+      "timestamp": "2026-03-05T14:23:18.507Z",
+      "profileId": "17620274114058o6qg2c5n",
+      "mondayItemId": "2761623541",
+      "projectFolderPath": "/Users/studiovideo/Desktop/Zone de test/260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "type": "backup",
+      "projectName": "260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772719967237",
+      "timestamp": "2026-03-05T14:12:47.237Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 784347415,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772719967236",
+      "timestamp": "2026-03-05T14:12:47.236Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "upload",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "skipped": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260305A_CDLE_FUTURNESS_VIDEO_3_MP"
+      }
+    },
+    {
+      "id": "1772719863472",
+      "timestamp": "2026-03-05T14:11:03.472Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "CDLE_FUTURNESS_EP03 02.mp4",
+          "size": 401446233
+        },
+        {
+          "name": "CDLE_FUTURNESS_EP03 01.mp4",
+          "size": 382901182
+        }
+      ],
+      "totalSize": 784347415,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772719650130",
+      "timestamp": "2026-03-05T14:07:30.130Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "failed",
+      "error": "Échec de la copie"
+    },
+    {
+      "id": "1772719602160",
+      "timestamp": "2026-03-05T14:06:42.160Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "failed",
+      "error": "Échec de la copie"
+    },
+    {
+      "id": "1772719232559",
+      "timestamp": "2026-03-05T14:00:32.559Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "upload",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260305A_CDLE_FUTURNESS_VIDEO_3_MP"
+      }
+    },
+    {
+      "id": "1772719220599",
+      "timestamp": "2026-03-05T14:00:20.599Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2638467966",
+      "projectFolderPath": "/Volumes/BACKUP PRO/POLE PAR POLE/260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "type": "backup",
+      "projectName": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "status": "copy_completed",
+      "files": [],
+      "totalSize": 0,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772710252146",
+      "timestamp": "2026-03-05T11:30:52.146Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2761623500",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772710252140",
+      "timestamp": "2026-03-05T11:30:52.140Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2761623500",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC"
+      }
+    },
+    {
+      "id": "1772710221420",
+      "timestamp": "2026-03-05T11:30:21.420Z",
+      "profileId": "1762027777584bhmx0uydt",
+      "mondayItemId": "2761623500",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772710087832",
+      "timestamp": "2026-03-05T11:28:07.832Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 1743227910,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772710087828",
+      "timestamp": "2026-03-05T11:28:07.828Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772709992873",
+      "timestamp": "2026-03-05T11:26:32.873Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "260219A_DDLE_PAUVRETÉ_TC_3.mp4",
+          "size": 1684184368
+        },
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 1743227910,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772707925295",
+      "timestamp": "2026-03-05T10:52:05.295Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 9454576356,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772707925291",
+      "timestamp": "2026-03-05T10:52:05.291Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772707584683",
+      "timestamp": "2026-03-05T10:46:24.683Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "260226A_REC_UNIVERSITE_DAUPHINE_CF_1.mp4",
+          "size": 9395532814
+        },
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 9454576356,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772647729955",
+      "timestamp": "2026-03-04T18:08:49.955Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772647729950",
+      "timestamp": "2026-03-04T18:08:49.950Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772647697382",
+      "timestamp": "2026-03-04T18:08:17.382Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772647333340",
+      "timestamp": "2026-03-04T18:02:13.340Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772647333335",
+      "timestamp": "2026-03-04T18:02:13.335Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP.zip",
+        "size": 78627222
+      }
+    },
+    {
+      "id": "1772647299876",
+      "timestamp": "2026-03-04T18:01:39.876Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772647093314",
+      "timestamp": "2026-03-04T17:58:13.314Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772647093309",
+      "timestamp": "2026-03-04T17:58:13.309Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772647061140",
+      "timestamp": "2026-03-04T17:57:41.140Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772646158572",
+      "timestamp": "2026-03-04T17:42:38.572Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772646158565",
+      "timestamp": "2026-03-04T17:42:38.565Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772646126987",
+      "timestamp": "2026-03-04T17:42:06.987Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772645726098",
+      "timestamp": "2026-03-04T17:35:26.098Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772645726094",
+      "timestamp": "2026-03-04T17:35:26.094Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772645694673",
+      "timestamp": "2026-03-04T17:34:54.673Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    },
+    {
+      "id": "1772644451824",
+      "timestamp": "2026-03-04T17:14:11.824Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null,
+      "totalSize": 59043542,
+      "nasUploadSuccess": true,
+      "nasUploadError": null
+    },
+    {
+      "id": "1772644451816",
+      "timestamp": "2026-03-04T17:14:11.816Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "upload",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "completed",
+      "uploadResult": {
+        "success": true,
+        "remotePath": "/Volumes/Video/Vidéos en cours/2026/260308A_ITW_TEST_BACKUPFLOW1_MP"
+      }
+    },
+    {
+      "id": "1772644421240",
+      "timestamp": "2026-03-04T17:13:41.240Z",
+      "profileId": "1762023236077jxbjfgsjs",
+      "mondayItemId": "2735503163",
+      "projectFolderPath": "/Users/studiovideo/Downloads/ZONE TEST/260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "type": "backup",
+      "projectName": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "status": "copy_completed",
+      "files": [
+        {
+          "name": "MATRIX_TEST.mp4",
+          "size": 59043542
+        }
+      ],
+      "totalSize": 59043542,
+      "isSession": false,
+      "sessionNumber": null,
+      "parentProjectPath": null
+    }
+  ]
+}

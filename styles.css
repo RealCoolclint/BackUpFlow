@@ -1010,6 +1010,10 @@ body {
   -webkit-app-region: no-drag;
 }
 
+.select {
+  padding-right: 24px;
+}
+
 .input:focus, .select:focus {
   outline: none;
   border-color: var(--accent);
@@ -2154,23 +2158,12 @@ body {
   width: auto;
   height: auto;
   opacity: 1;
-  /* L'animation est gérée par JavaScript pour un contrôle précis */
-  transform: scale(0.9); /* Taille initiale gérée par JS */
+  animation: splashRotate 3.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes logoReveal {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes splashRotate {
+  0%   { opacity: 0; transform: scale(0.88) rotate(-6deg); }
+  100% { opacity: 1; transform: scale(1.05) rotate(0deg); }
 }
 
 .app-container {

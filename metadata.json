@@ -1,0 +1,256 @@
+{
+  "projects": {
+    "260301A_ITW_TEST_BACKUPFLOW_UN_SEUL_FICHIER_MP": {
+      "name": "260301A_ITW_TEST_BACKUPFLOW_UN_SEUL_FICHIER_MP",
+      "created": "2026-02-26T14:41:33.733Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW UN SEUL FICHIER",
+      "initiales": "MP",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260301A_ITW_TEST_BACKUPFLOW2_FORBATCH_MP": {
+      "name": "260301A_ITW_TEST_BACKUPFLOW2_FORBATCH_MP",
+      "created": "2026-02-25T09:12:16.487Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW2_FORBATCH",
+      "initiales": "MP",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260301A_ITW_TEST_BACKUPFLOW_UN_SEUL_FICHIER_MDN": {
+      "name": "260301A_ITW_TEST_BACKUPFLOW_UN_SEUL_FICHIER_MDN",
+      "created": "2026-02-25T13:07:15.317Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW UN SEUL FICHIER",
+      "initiales": "MDN",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260301A_ITW_TEST_BACKUPFLOW_UN_SEUL_FICHIER_CF": {
+      "name": "260301A_ITW_TEST_BACKUPFLOW_UN_SEUL_FICHIER_CF",
+      "created": "2026-02-25T13:11:31.851Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW UN SEUL FICHIER",
+      "initiales": "CF",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260226A_ITR_STUDCORP_MDN": {
+      "name": "260226A_ITR_STUDCORP_MDN",
+      "created": "2026-02-26T10:50:51.005Z",
+      "format": "ITR",
+      "sujet": "ITR - STUDCORP",
+      "initiales": "MDN",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260226A_REC_UNIVERSITE_DAUPHINE_CF": {
+      "name": "260226A_REC_UNIVERSITE_DAUPHINE_CF",
+      "created": "2026-02-26T15:23:06.224Z",
+      "format": "REC",
+      "sujet": "REC - UNIVERSITE DAUPHINE",
+      "initiales": "CF",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260308A_ITW_TEST_BACKUPFLOW1_MP": {
+      "name": "260308A_ITW_TEST_BACKUPFLOW1_MP",
+      "created": "2026-03-05T11:28:07.831Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW1",
+      "initiales": "MP",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC": {
+      "name": "260308A_ITW_TEST_BACKUPFLOW_THOMAS_TC",
+      "created": "2026-03-05T11:30:52.143Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW THOMAS",
+      "initiales": "TC",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260305A_CDLE_FUTURNESS_VIDEO_3_MP": {
+      "name": "260305A_CDLE_FUTURNESS_VIDEO_3_MP",
+      "created": "2026-03-05T14:53:05.256Z",
+      "format": "CDLE",
+      "sujet": "CDLE-FUTURNESS VIDEO 3",
+      "initiales": "MP",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP": {
+      "name": "260308B_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "created": "2026-03-05T14:23:48.269Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW ANTOINE",
+      "initiales": "AP",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN": {
+      "name": "260308B_ITW_TEST_BACKUPFLOW_MAELLE_MDN",
+      "created": "2026-03-05T15:25:59.351Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW MAELLE",
+      "initiales": "MDN",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260305B_DDLE_TIER_LIST_REFORMES_CF": {
+      "name": "260305B_DDLE_TIER_LIST_REFORMES_CF",
+      "created": "2026-03-05T15:52:59.228Z",
+      "format": "DDLE",
+      "sujet": "DDLE_TIER_LIST_REFORMES",
+      "initiales": "CF",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP": {
+      "name": "260308A_ITW_TEST_BACKUPFLOW_ANTOINE_AP",
+      "created": "2026-03-05T16:20:32.751Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW ANTOINE",
+      "initiales": "AP",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260310A_ITW_BLEU_SOLEIL_MP": {
+      "name": "260310A_ITW_BLEU_SOLEIL_MP",
+      "created": "2026-03-10T14:10:00.665Z",
+      "format": "ITW",
+      "sujet": "ITW BLEU SOLEIL",
+      "initiales": "MP",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260315A_ITW_TEST_BACKUPFLOW1_MP": {
+      "name": "260315A_ITW_TEST_BACKUPFLOW1_MP",
+      "created": "2026-03-11T15:26:59.394Z",
+      "format": "ITW",
+      "sujet": "ITW_TEST_BACKUPFLOW1",
+      "initiales": "MP",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260312A_ITW_ALFRED_CHATILLON_MP": {
+      "name": "260312A_ITW_ALFRED_CHATILLON_MP",
+      "created": "2026-03-12T10:23:06.801Z",
+      "format": "ITW",
+      "sujet": "ITW - ALFRED CHATILLON",
+      "initiales": "MP",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM": {
+      "name": "260312A_CDLE_APPLIS_DEDIEES_ETUDIANTS_LM",
+      "created": "2026-03-12T12:12:06.965Z",
+      "format": "CDLE",
+      "sujet": "CDLE_APPLIS_DEDIEES_ETUDIANTS",
+      "initiales": "LM",
+      "filesCount": 3,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM": {
+      "name": "260312B_DDLE_RYTHMES_SCOLAIRES_FIGES_LM",
+      "created": "2026-03-12T12:15:49.744Z",
+      "format": "DDLE",
+      "sujet": "DDLE_RYTHMES_SCOLAIRES_FIGES",
+      "initiales": "LM",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM": {
+      "name": "260312C_DOC_PLATEAUX_CLEM_PRECARITE_LM",
+      "created": "2026-03-12T12:42:46.120Z",
+      "format": "DOC",
+      "sujet": "DOC_PLATEAUX_CLEM_PRECARITE",
+      "initiales": "LM",
+      "filesCount": 14,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260312B_DOC_SELFIE_CLEM_PRECARITE_MP": {
+      "name": "260312B_DOC_SELFIE_CLEM_PRECARITE_MP",
+      "created": "2026-03-12T13:43:17.481Z",
+      "format": "DOC",
+      "sujet": "SELFIE_CLEM_PRECARITE",
+      "initiales": "MP",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP": {
+      "name": "260226C_ITW_DOC_PRECARITE_ETUDIANT_X2_MP",
+      "created": "2026-03-12T17:06:40.405Z",
+      "format": "ITW",
+      "sujet": "ITW - DOC PRECARITE ETUDIANT X2",
+      "initiales": "MP",
+      "filesCount": 6,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC": {
+      "name": "260319A_DDLE_IMPACT_EDUCATION_BAISSE_NATALITE_TC",
+      "created": "2026-03-19T11:27:15.907Z",
+      "format": "DDLE",
+      "sujet": "DDLE_IMPACT_EDUCATION_BAISSE_NATALITE",
+      "initiales": "TC",
+      "filesCount": 2,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260319B_CDLE_AIDES_CROUS_INCONNUES_TC": {
+      "name": "260319B_CDLE_AIDES_CROUS_INCONNUES_TC",
+      "created": "2026-03-19T14:14:15.420Z",
+      "format": "CDLE",
+      "sujet": "CDLE_AIDES_CROUS_INCONNUES",
+      "initiales": "TC",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260319C_DDLE_IA_GENZ_DEBILE_MDN": {
+      "name": "260319C_DDLE_IA_GENZ_DEBILE_MDN",
+      "created": "2026-03-19T14:41:20.453Z",
+      "format": "DDLE",
+      "sujet": "DDLE_IA_GENZ_DEBILE",
+      "initiales": "MDN",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    },
+    "260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC": {
+      "name": "260319D_DDLE_CLASSEMENT_DES_VILLES_ETUDIANT_TC",
+      "created": "2026-03-19T15:57:16.681Z",
+      "format": "DDLE",
+      "sujet": "DDLE_CLASSEMENT DES VILLES ETUDIANT",
+      "initiales": "TC",
+      "filesCount": 1,
+      "compressed": true,
+      "uploaded": true
+    }
+  },
+  "settings": {},
+  "lastSync": "2026-03-19T15:57:16.681Z"
+}

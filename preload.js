@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 // Exposer les APIs sécurisées au renderer
 contextBridge.exposeInMainWorld('electronAPI', {
   // Configuration
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   getSettings: () => ipcRenderer.invoke('get-settings'),
   saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
   
@@ -84,6 +85,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openExternalURL: (url) => ipcRenderer.invoke('open-external-url', url),
 
   // Monday.com
+  getMondayUsers: () => ipcRenderer.invoke('get-monday-users'),
   mondayTestConnection: (token, boardId) => ipcRenderer.invoke('monday-test-connection', { token, boardId }),
   mondayGetProjects: (boardId, token, includeBackedUp) => ipcRenderer.invoke('monday-get-projects', { boardId, token, includeBackedUp }),
   mondayGetColumnIds: (boardId, token) => ipcRenderer.invoke('monday-get-column-ids', { boardId, token }),

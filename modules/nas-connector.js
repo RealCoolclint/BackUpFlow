@@ -6,91 +6,9 @@ const { EventEmitter } = require('events');
 class NASConnector extends EventEmitter {
   constructor() {
     super();
-    this._vpnPollingInterval = null;
-    this._lastVpnConnected = null;
     this._autoMountInProgress = false;
     this._pingInterval = null;
-  }
-
-  // --------------- VPN detection ---------------
-
-  _isVpnReachable() {
-    return new Promise((resolve) => {
-      exec('nc -z -w5 77.158.242.12 445', (error) => {
-        resolve(!error);
-      });
-    });
-  }
-
-  async checkVPN() {
-    const reachable = await this._isVpnReachable();
-    return { isRunning: reachable, isConnected: reachable, installed: true };
-  }
-
-  async connectVPN(vpnName) {
-    return new Promise((resolve) => {
-      const cmd = `osascript -e 'tell application "FortiClient" to activate'`;
-      exec(cmd, (error) => {
-        if (error) {
-          resolve({ success: false, error: error.message });
-        } else {
-          resolve({ success: true });
-        }
-      });
-    });
-  }
-
-  // --------------- VPN polling + auto-mount ---------------
-
-  startVpnPolling(smbURL, nasRemotePath) {
-    this.stopVpnPolling();
-    this._lastVpnConnected = null;
-
-    const poll = async () => {
-      const reachable = await this._isVpnReachable();
-
-      this.emit('vpn-status', { connected: reachable });
-
-      const wasDisconnected = this._lastVpnConnected === false || this._lastVpnConnected === null;
-      if (reachable && wasDisconnected && !this._autoMountInProgress) {
-        const alreadyMounted = await fs.pathExists(nasRemotePath);
-        if (!alreadyMounted) {
-          this._autoMountInProgress = true;
-          try {
-            exec(`open "${smbURL}"`, async (err) => {
-              if (err) {
-                this._autoMountInProgress = false;
-                this.emit('nas-auto-mount-failed', { error: err.message });
-                return;
-              }
-              await new Promise((r) => setTimeout(r, 3000));
-              const mounted = await fs.pathExists(nasRemotePath);
-              this._autoMountInProgress = false;
-              if (mounted) {
-                this.emit('nas-auto-mounted', { path: nasRemotePath });
-              } else {
-                this.emit('nas-auto-mount-failed', { error: 'Montage non vérifié après 3s' });
-              }
-            });
-          } catch (e) {
-            this._autoMountInProgress = false;
-            this.emit('nas-auto-mount-failed', { error: e.message });
-          }
-        }
-      }
-
-      this._lastVpnConnected = reachable;
-    };
-
-    poll();
-    this._vpnPollingInterval = setInterval(poll, 30000);
-  }
-
-  stopVpnPolling() {
-    if (this._vpnPollingInterval) {
-      clearInterval(this._vpnPollingInterval);
-      this._vpnPollingInterval = null;
-    }
+    this._keepAliveInterval = null;
   }
 
   // --------------- SMB mount ---------------
@@ -192,6 +110,47 @@ class NASConnector extends EventEmitter {
     }
   }
 
+  // --------------- Keep-Alive SMB ---------------
+
+  startKeepAlive(smbURL, remotePath, intervalMs = 30000) {
+    this.stopKeepAlive();
+    this._keepAliveInterval = setInterval(async () => {
+      try {
+        const testFile = path.join(remotePath, `.backupflow_keepalive_${Date.now()}`);
+        await fs.writeFile(testFile, 'ka');
+        await fs.remove(testFile);
+        this.emit('nas-keepalive-ok', { path: remotePath });
+      } catch (e) {
+        console.warn('[KeepAlive] NAS inaccessible, tentative de remontage...');
+        this.emit('nas-keepalive-lost', { path: remotePath });
+        try {
+          const mountResult = await this.mountSMB(smbURL);
+          if (mountResult.success) {
+            await new Promise((r) => setTimeout(r, 3000));
+            const access = await this.checkNASAccess(remotePath);
+            if (access.accessible) {
+              console.log('[KeepAlive] NAS remonté avec succès');
+              this.emit('nas-keepalive-reconnected', { path: remotePath });
+            } else {
+              this.emit('nas-keepalive-failed', { path: remotePath });
+            }
+          } else {
+            this.emit('nas-keepalive-failed', { path: remotePath });
+          }
+        } catch (err) {
+          this.emit('nas-keepalive-failed', { path: remotePath, error: err.message });
+        }
+      }
+    }, intervalMs);
+  }
+
+  stopKeepAlive() {
+    if (this._keepAliveInterval) {
+      clearInterval(this._keepAliveInterval);
+      this._keepAliveInterval = null;
+    }
+  }
+
   // --------------- Finder ---------------
 
   async openFinderOnNAS(mountedPath) {
@@ -206,12 +165,8 @@ class NASConnector extends EventEmitter {
   // --------------- Full protocol ---------------
 
   async fullProtocol(settings, stepCallback) {
-    const result = { vpn: null, smb: null, finder: false, accessible: false };
+    const result = { smb: null, finder: false, accessible: false };
     try {
-      if (stepCallback) stepCallback({ step: 'vpn', status: 'checking' });
-      result.vpn = await this.checkVPN();
-      if (stepCallback) stepCallback({ step: 'vpn', status: 'done', result: result.vpn });
-
       if (settings.nas?.smbURL) {
         if (stepCallback) stepCallback({ step: 'smb', status: 'mounting' });
         result.smb = await this.mountSMB(settings.nas.smbURL);
@@ -285,8 +240,8 @@ class NASConnector extends EventEmitter {
   // --------------- Cleanup ---------------
 
   destroy() {
-    this.stopVpnPolling();
     this.stopPing();
+    this.stopKeepAlive();
     this.removeAllListeners();
   }
 }

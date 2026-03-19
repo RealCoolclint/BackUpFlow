@@ -231,8 +231,10 @@ class MetadataManager {
       mondayMode: profileData.mondayMode || 'monday',
       isProtected: false,
       passwordHash: null,
-      email: '',
+      email: profileData.email !== undefined ? profileData.email : '',
+      mondayUserId: profileData.mondayUserId || null,
       archived: false,
+      zipNasEnabled: false,
       isAdmin: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -292,7 +294,13 @@ class MetadataManager {
       email: profileData.email !== undefined
         ? profileData.email
         : (data.profiles[index].email || ''),
+      mondayUserId: profileData.mondayUserId !== undefined
+        ? (profileData.mondayUserId || null)
+        : (data.profiles[index].mondayUserId ?? null),
       archived: data.profiles[index].archived || false,
+      zipNasEnabled: profileData.zipNasEnabled !== undefined
+        ? profileData.zipNasEnabled
+        : (data.profiles[index].zipNasEnabled || false),
       isAdmin: data.profiles[index].isAdmin || false,
       isProtected: data.profiles[index].isProtected || false,
       passwordHash: data.profiles[index].passwordHash || null,

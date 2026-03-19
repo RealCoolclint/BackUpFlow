@@ -17,11 +17,21 @@ class MailerManager {
     return !!this.resend;
   }
 
+  _resolveRecipient(toEmail) {
+    const adminEmail = this.adminEmail;
+    const trimmed = (toEmail && String(toEmail).trim()) ? String(toEmail).trim() : null;
+    if (!trimmed || trimmed === adminEmail) {
+      return adminEmail;
+    }
+    return [trimmed, adminEmail];
+  }
+
   async sendWorkflowSuccess({ toEmail, toName, projectName, gofileLink }) {
-    if (!this.isConfigured() || !toEmail) return;
+    if (!this.isConfigured()) return;
+    const to = this._resolveRecipient(toEmail);
     await this.resend.emails.send({
       from: this.from,
-      to: toEmail,
+      to,
       subject: `Backup terminé — ${projectName}`,
       html: `
         <h2>Backup terminé avec succès</h2>
@@ -34,10 +44,11 @@ class MailerManager {
   }
 
   async sendWorkflowStopped({ toEmail, toName, projectName }) {
-    if (!this.isConfigured() || !toEmail) return;
+    if (!this.isConfigured()) return;
+    const to = this._resolveRecipient(toEmail);
     await this.resend.emails.send({
       from: this.from,
-      to: toEmail,
+      to,
       subject: `Backup interrompu — ${projectName}`,
       html: `
         <h2>Backup interrompu</h2>
@@ -48,11 +59,12 @@ class MailerManager {
     });
   }
 
-  async sendErrorReport({ errorTitle, errorTechnical, errorVulgarized, context }) {
+  async sendErrorReport({ toEmail, errorTitle, errorTechnical, errorVulgarized, context }) {
     if (!this.isConfigured()) return;
+    const to = this._resolveRecipient(toEmail);
     await this.resend.emails.send({
       from: this.from,
-      to: this.adminEmail,
+      to,
       subject: `[BackUpFlow] Erreur — ${errorTitle}`,
       html: `
         <h2>Erreur majeure détectée</h2>
@@ -67,7 +79,8 @@ class MailerManager {
   }
 
   async sendBatchSummaryMail({ toEmail, toName, projects }) {
-    if (!this.isConfigured() || !toEmail) return { success: false, error: 'Non configuré' };
+    if (!this.isConfigured()) return { success: false, error: 'Non configuré' };
+    const to = this._resolveRecipient(toEmail);
     try {
       const projectLines = projects.map(p => {
         const status = p.status === 'partial' ? 'Partiel (NAS échoué)' : 'Complet';
@@ -89,7 +102,7 @@ class MailerManager {
 
       const { data, error } = await this.resend.emails.send({
         from: this.from,
-        to: toEmail,
+        to,
         subject: `Batch terminé — ${projects.length} projet(s)`,
         html
       });

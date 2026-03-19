@@ -382,6 +382,47 @@ class UploadManager {
     return await this.uploadFile(zipPath, remotePath, onProgress);
   }
 
+  async uploadProjectFolder(folderPath, projectName, onProgress = null) {
+    const remotePath = path.join(this.config.remotePath, projectName);
+
+    console.log('[NAS uploadProjectFolder] Début - source:', folderPath, 'destination NAS:', remotePath);
+
+    const exists = await this.fileExists(remotePath);
+    if (exists && onProgress) {
+      onProgress({ status: 'exists', message: 'Le dossier existe déjà sur le NAS' });
+      return { success: true, skipped: true, remotePath };
+    }
+
+    let filesCopied = 0;
+    let filesErrored = 0;
+
+    try {
+      await fs.copy(folderPath, remotePath, {
+        overwrite: false,
+        filter: (src) => {
+          try {
+            const stats = fs.statSync(src);
+            if (stats.isFile()) {
+              console.log('[NAS uploadProjectFolder] Copie fichier:', path.basename(src), 'taille:', stats.size, 'octets');
+              filesCopied++;
+              if (onProgress) onProgress({ status: 'uploading', currentFile: path.basename(src) });
+            }
+          } catch (filterErr) {
+            console.error('[NAS uploadProjectFolder] Erreur fichier', path.basename(src), ':', filterErr.message, filterErr.stack);
+            filesErrored++;
+            return false;
+          }
+          return true;
+        }
+      });
+      console.log('[NAS uploadProjectFolder] Terminé -', filesCopied, 'fichiers copiés avec succès,', filesErrored, 'fichiers en erreur');
+      return { success: true, remotePath };
+    } catch (err) {
+      console.error('[NAS uploadProjectFolder] Erreur :', err);
+      throw err;
+    }
+  }
+
   /**
    * Liste les fichiers sur le serveur
    */

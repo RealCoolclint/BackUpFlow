@@ -453,10 +453,6 @@ class StorageManager {
    * Copie simultanée vers les deux destinations avec progression globale
    */
   async copyToBothDestinations(projectName, files, onProgress = null, checkAborted = null) {
-    let totalSize = files.reduce((sum, f) => sum + (f.size || 0), 0) * 2;
-    const globalTracker = new ProgressTracker(totalSize);
-    let globalProcessed = 0;
-    
     // Pré-calculer les noms une seule fois pour les deux destinations
     let videoIndex = 0;
     const fileNames = files.map(f => {
@@ -468,7 +464,59 @@ class StorageManager {
       }
       return path.basename(f.path);
     });
-    
+
+    if (this.config.ssdPerso && this.config.ssdStudio) {
+      const normPerso = path.resolve(this.config.ssdPerso);
+      const normStudio = path.resolve(this.config.ssdStudio);
+      if (normPerso === normStudio) {
+        console.warn('[Storage] SSD Perso et SSD Studio pointent vers le même dossier — copie Studio ignorée pour éviter les doublons');
+        const totalSizeSingle = files.reduce((sum, f) => sum + (f.size || 0), 0);
+        const globalTracker = new ProgressTracker(totalSizeSingle);
+        let globalProcessed = 0;
+        const result = await this.copyToSSDPerso(projectName, files, fileNames, (progress) => {
+          if (progress.progress === 100 && progress.status === 'completed') {
+            globalProcessed += totalSizeSingle;
+            globalTracker.update(globalProcessed);
+          }
+          if (onProgress) {
+            const globalInfo = globalTracker.getProgressInfo();
+            onProgress({
+              ...progress,
+              destination: 'SSD PERSO',
+              globalProgress: globalInfo.progress,
+              globalProcessed: globalInfo.processedFormatted,
+              globalTotal: globalInfo.totalFormatted,
+              globalSpeed: globalInfo.speedFormatted,
+              globalETA: globalInfo.etaFormatted
+            });
+          }
+        }, checkAborted);
+        globalTracker.update(totalSizeSingle);
+        if (onProgress) {
+          const globalInfo = globalTracker.getProgressInfo();
+          onProgress({
+            step: 'copying',
+            progress: 100,
+            status: 'completed',
+            message: 'Copie terminée',
+            globalProgress: 100,
+            globalProcessed: globalInfo.processedFormatted,
+            globalTotal: globalInfo.totalFormatted,
+            elapsed: globalInfo.elapsedFormatted
+          });
+        }
+        return {
+          ssdPerso: result,
+          ssdStudio: { skipped: true, reason: 'same_path_as_perso' },
+          success: result.success
+        };
+      }
+    }
+
+    let totalSize = files.reduce((sum, f) => sum + (f.size || 0), 0) * 2;
+    const globalTracker = new ProgressTracker(totalSize);
+    let globalProcessed = 0;
+
     const promises = [];
     
     // Copie vers SSD PERSO (dossier projet)

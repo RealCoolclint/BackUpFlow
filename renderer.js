@@ -60,6 +60,16 @@ const thumbnailCache = new Map();
 
 const CHANGELOG = [
   {
+    version: 'V1.05.03.26',
+    date: '5 mars 2026',
+    notes: [
+      'Numéro de version désormais statique, basé sur la date du build (format 1.JJ.MM.AA)',
+      'Correction de la flèche des menus déroulants : repositionnée pour une meilleure harmonie visuelle',
+      'Compression HandBrake : si le fichier compressé est plus lourd que l\'original, le fichier original est conservé et transmis au NAS',
+      'Correction des mails de confirmation : le mail est désormais envoyé au profil actif qui a lancé le workflow, et non systématiquement à l\'administrateur'
+    ]
+  },
+  {
     version: 'V1.21.02.26',
     date: '21 février 2026',
     notes: [
@@ -77,20 +87,10 @@ const CHANGELOG = [
 // Clé API Monday par défaut (Tableau suivi de production) — peut être modifiée dans les paramètres
 const DEFAULT_MONDAY_API_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjYxODY3ODk2NCwiYWFpIjoxMSwidWlkIjo2NzA4Mjk3NSwiaWFkIjoiMjAyNi0wMi0wOVQwOToxMzowOC45NzNaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTUxMzM5NDAsInJnbiI6ImV1YzEifQ.FsgVKBIv_xaWxaA4nzgJQVBnNWVTtLTeXY9IukoaMFI';
 
-// Numéro de version (V1.DD.MM.AA) — calculé au chargement
-function getAppVersion() {
-  if (typeof window.APP_VERSION === 'string' && window.APP_VERSION) return window.APP_VERSION;
-  const d = new Date();
-  const dd = String(d.getDate()).padStart(2, '0');
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const yy = String(d.getFullYear()).slice(-2);
-  return 'V1.' + dd + '.' + mm + '.' + yy;
-}
-
 // Initialisation
 document.addEventListener('DOMContentLoaded', async () => {
-  // Affichage du numéro de version (V1.DD.MM.AA)
-  const version = getAppVersion();
+  // Affichage du numéro de version (depuis package.json)
+  const version = await window.electronAPI.getAppVersion();
   const splashV = document.getElementById('splashVersion');
   const appV = document.getElementById('appVersion');
   if (splashV) splashV.textContent = version;
@@ -253,6 +253,8 @@ async function initializeApp() {
   if (settingsCompress) settingsCompress.checked = state.settings.compress !== false;
   const settingsUploadNAS = document.getElementById('settingsUploadNAS');
   if (settingsUploadNAS) settingsUploadNAS.checked = state.settings.uploadToNAS !== false;
+  const settingsZipNas = document.getElementById('settingsZipNas');
+  if (settingsZipNas) settingsZipNas.checked = state.settings.zipNasEnabled || false;
   const settingsVerifyIntegrity = document.getElementById('settingsVerifyIntegrity');
   if (settingsVerifyIntegrity) settingsVerifyIntegrity.checked = state.settings.verifyIntegrity !== false;
   // Charger les extensions vidéo autorisées
@@ -494,6 +496,9 @@ function setupEventListeners() {
   document.getElementById('settingsUploadNAS')?.addEventListener('change', (e) => {
     state.settings.uploadToNAS = e.target.checked;
   });
+  document.getElementById('settingsZipNas')?.addEventListener('change', (e) => {
+    state.settings.zipNasEnabled = e.target.checked;
+  });
   document.getElementById('settingsVerifyIntegrity')?.addEventListener('change', (e) => {
     state.settings.verifyIntegrity = e.target.checked;
   });
@@ -525,13 +530,11 @@ function setupEventListeners() {
       try { await window.electronAPI.removeFolder(paths.ssdStudio); } catch {}
     }
     showNotification('Fichiers copiés supprimés', 'info');
-    if (state.selectedProfile?.email) {
-      window.electronAPI.sendWorkflowStoppedMail({
-        toEmail: state.selectedProfile.email,
-        toName: state.selectedProfile.name,
-        projectName: state.workflow.projectName || 'Projet'
-      });
-    }
+    window.electronAPI.sendWorkflowStoppedMail({
+      toEmail: state.selectedProfile?.email,
+      toName: state.selectedProfile?.name || 'Utilisateur',
+      projectName: state.workflow.projectName || 'Projet'
+    });
     state._workflowAborted = false;
     state._abortedPaths = null;
     returnToWorkflowConfig();
@@ -539,26 +542,22 @@ function setupEventListeners() {
 
   document.getElementById('workflowAbortedKeepBtn')?.addEventListener('click', () => {
     showNotification('Fichiers copiés conservés', 'info');
-    if (state.selectedProfile?.email) {
-      window.electronAPI.sendWorkflowStoppedMail({
-        toEmail: state.selectedProfile.email,
-        toName: state.selectedProfile.name,
-        projectName: state.workflow.projectName || 'Projet'
-      });
-    }
+    window.electronAPI.sendWorkflowStoppedMail({
+      toEmail: state.selectedProfile?.email,
+      toName: state.selectedProfile?.name || 'Utilisateur',
+      projectName: state.workflow.projectName || 'Projet'
+    });
     state._workflowAborted = false;
     state._abortedPaths = null;
     returnToWorkflowConfig();
   });
 
   document.getElementById('workflowAbortedQuitBtn')?.addEventListener('click', () => {
-    if (state.selectedProfile?.email) {
-      window.electronAPI.sendWorkflowStoppedMail({
-        toEmail: state.selectedProfile.email,
-        toName: state.selectedProfile.name,
-        projectName: state.workflow.projectName || 'Projet'
-      });
-    }
+    window.electronAPI.sendWorkflowStoppedMail({
+      toEmail: state.selectedProfile?.email,
+      toName: state.selectedProfile?.name || 'Utilisateur',
+      projectName: state.workflow.projectName || 'Projet'
+    });
     window.electronAPI.forceQuit?.();
   });
 
@@ -737,6 +736,28 @@ function setupEventListeners() {
   });
   document.getElementById('selectProfilePhotoBtn').addEventListener('click', selectProfilePhoto);
   document.getElementById('removeProfilePhotoBtn').addEventListener('click', removeProfilePhoto);
+  
+  const profileMondayUserSelect = document.getElementById('profileMondayUser');
+  if (profileMondayUserSelect) {
+    const populateMondayUsers = async (preselectedId = null) => {
+      if (profileMondayUserSelect.options.length > 1 && !preselectedId) return;
+      try {
+        const { users, error } = await window.electronAPI.getMondayUsers();
+        if (error) {
+          showNotification(`Monday: ${error}`, 'warning');
+          return;
+        }
+        const selected = preselectedId || profileMondayUserSelect.value;
+        profileMondayUserSelect.innerHTML = '<option value="">— Non lié —</option>' +
+          users.map(u => `<option value="${escapeHtml(String(u.id))}">${escapeHtml(`${(u.name || '').trim() || u.email || u.id} (${u.email || ''})`)}</option>`).join('');
+        if (selected) profileMondayUserSelect.value = selected;
+      } catch (e) {
+        showNotification('Erreur chargement utilisateurs Monday', 'error');
+      }
+    };
+    profileMondayUserSelect.addEventListener('focus', () => populateMondayUsers());
+    profileMondayUserSelect.addEventListener('click', () => populateMondayUsers());
+  }
   
   // Fermer le modal en cliquant à l'extérieur
   const profileModal = document.getElementById('profileModal');
@@ -1758,9 +1779,11 @@ function addToBatchQueue() {
     sujet: state.workflow.sujet,
     initiales: state.workflow.initiales,
     mondayItemId: state.workflow.mondayItemId || null,
+    mondayUserId: state.selectedProfile?.mondayUserId || null,
     files: [...state.workflow.files], // Copie des fichiers
     compress: state.settings.compress !== false,
-    uploadToNAS: true,
+    uploadToNAS: state.settings.uploadToNAS !== false,
+    zipNasEnabled: state.selectedProfile?.zipNasEnabled || false,
     ssdPersoPath: state.workflow.ssdPersoPath || null,
     ssdStudioPath: state.workflow.ssdStudioPath || null,
     profileId: state.selectedProfile ? state.selectedProfile.id : null,
@@ -2163,8 +2186,9 @@ async function startBatchQueue() {
         sujet: item.sujet,
         initiales: item.initiales,
         mondayItemId: item.mondayItemId || null,
+        mondayUserId: item.mondayUserId || null,
         compress: item.compress,
-        uploadToNAS: item.uploadToNAS,
+        uploadToNAS: (item.uploadToNAS ?? state.settings.uploadToNAS) !== false,
         ssdPersoPath: item.ssdPersoPath,
         ssdStudioPath: item.ssdStudioPath,
         profileId: item.profileId,
@@ -2233,6 +2257,8 @@ async function startBatchQueue() {
                   itemId: item.mondayItemId,
                   boardId,
                   apiToken: token,
+                  mondayUserId: item.mondayUserId || null,
+                  projectName: item.projectName || '',
                   updates: {
                     statutProd: '3 - BACKUPÉ',
                     gofileLink: result.gofileDownloadPage || item.gofileLink || null,
@@ -2294,22 +2320,20 @@ async function startBatchQueue() {
   await loadHistory();
 
   const batchProfile = state.selectedProfile;
-  if (batchProfile?.email) {
-    const batchSummary = state.batchQueue.items
-      .filter(it => it.status === 'completed' || it.status === 'partial')
-      .map(it => ({
-        projectName: it.projectName,
-        gofileLink: it.gofileLink || null,
-        status: it.status
-      }));
+  const batchSummary = state.batchQueue.items
+    .filter(it => it.status === 'completed' || it.status === 'partial')
+    .map(it => ({
+      projectName: it.projectName,
+      gofileLink: it.gofileLink || null,
+      status: it.status
+    }));
 
-    if (batchSummary.length > 0) {
-      window.electronAPI.sendBatchSummaryMail({
-        toEmail: batchProfile.email,
-        toName: batchProfile.name,
-        projects: batchSummary
-      });
-    }
+  if (batchSummary.length > 0) {
+    window.electronAPI.sendBatchSummaryMail({
+      toEmail: batchProfile?.email,
+      toName: batchProfile?.name || 'Utilisateur',
+      projects: batchSummary
+    });
   }
 
   showBatchCompleteScreen();
@@ -2655,6 +2679,7 @@ async function startWorkflow() {
     initiales: state.workflow.initiales,
     compress: state.settings.compress !== false,
     uploadToNAS: state.settings.uploadToNAS !== false,
+    zipNasEnabled: state.selectedProfile?.zipNasEnabled || false,
     ssdPersoPath: state.workflow.ssdPersoPath || null,
     isMultiCam: state.workflow.isMultiCam,
     multiCamSourcePath: state.workflow.multiCamSourcePath,
@@ -2674,8 +2699,10 @@ async function startWorkflow() {
         sujet: state.workflow.sujet,
         initiales: state.workflow.initiales,
         mondayItemId: state.workflow.mondayItemId || null,
+        mondayUserId: state.selectedProfile?.mondayUserId || null,
         compress: document.getElementById('optionCompress').checked,
-        uploadToNAS: skipNAS ? false : document.getElementById('optionUploadNAS').checked,
+        uploadToNAS: skipNAS ? false : (state.settings.uploadToNAS !== false),
+        zipNasEnabled: state.selectedProfile?.zipNasEnabled || false,
         ssdPersoPath: state.workflow.ssdPersoPath || null,
         ssdStudioPath: state.workflow.ssdStudioPath || null,
         profileId: state.selectedProfile ? state.selectedProfile.id : null,
@@ -2693,8 +2720,10 @@ async function startWorkflow() {
         sujet: state.workflow.sujet,
         initiales: state.workflow.initiales,
         mondayItemId: state.workflow.mondayItemId || null,
+        mondayUserId: state.selectedProfile?.mondayUserId || null,
         compress: state.settings.compress !== false,
         uploadToNAS: skipNAS ? false : (state.settings.uploadToNAS !== false),
+        zipNasEnabled: state.selectedProfile?.zipNasEnabled || false,
         ssdPersoPath: state.workflow.ssdPersoPath || null,
         ssdStudioPath: state.workflow.ssdStudioPath || null,
         profileId: state.selectedProfile ? state.selectedProfile.id : null,
@@ -2729,6 +2758,8 @@ async function startWorkflow() {
       switchView('workflowCompleted');
       triggerMondayUpdateAfterWorkflow({
         mondayItemId: state.workflow.mondayItemId,
+        mondayUserId: state.selectedProfile?.mondayUserId || null,
+        projectName: state.workflow.projectName || '',
         gofileLink: result.gofileDownloadPage || null,
         profileName: state.selectedProfile?.name || '',
         showInCompletedView: true
@@ -2738,10 +2769,10 @@ async function startWorkflow() {
       await loadHistory();
       state.lastWorkflowResult = { ...result, totalTime };
 
-      if (state.selectedProfile?.email && !state._workflowAborted) {
+      if (!state._workflowAborted) {
         window.electronAPI.sendWorkflowSuccessMail({
-          toEmail: state.selectedProfile.email,
-          toName: state.selectedProfile.name,
+          toEmail: state.selectedProfile?.email,
+          toName: state.selectedProfile?.name || 'Utilisateur',
           projectName: state.workflow.projectName || 'Projet',
           gofileLink: result.gofileDownloadPage || null
         });
@@ -2822,7 +2853,7 @@ function returnToWorkflowConfig() {
  * En cas d'échec, affiche un message discret sur l'écran "Workflow terminé" ou une notification (batch).
  * @param {Object} params - { mondayItemId, gofileLink, profileName, showInCompletedView }
  */
-function triggerMondayUpdateAfterWorkflow({ mondayItemId, gofileLink, profileName, showInCompletedView = true }) {
+function triggerMondayUpdateAfterWorkflow({ mondayItemId, mondayUserId, projectName, gofileLink, profileName, showInCompletedView = true }) {
   if (!mondayItemId) return;
   const token = (state.settings?.mondayApiToken || DEFAULT_MONDAY_API_TOKEN || '').trim();
   const boardId = (state.settings?.mondayBoardId || '').trim();
@@ -2850,6 +2881,8 @@ function triggerMondayUpdateAfterWorkflow({ mondayItemId, gofileLink, profileNam
     itemId: mondayItemId,
     boardId,
     apiToken: token,
+    mondayUserId: mondayUserId || null,
+    projectName: projectName || '',
     updates: {
       statutProd: '3 - BACKUPÉ',
       gofileLink: gofileLink || null,
@@ -4398,6 +4431,7 @@ async function testNASConnection() {
         
         if (result && result.success && result.path) {
           showNotification(`Partage SMB accessible!\nChemin: ${result.path}`, 'success');
+          nasRefreshIndicators().catch(() => {});
           
           // Tester aussi la connexion complète via le backend
           try {
@@ -4447,6 +4481,7 @@ async function testNASConnection() {
         
         if (result && result.success) {
           showNotification('Connexion SFTP réussie!', 'success');
+          nasRefreshIndicators().catch(() => {});
         } else {
           const errorMsg = result?.error || 'Erreur inconnue';
           showNotification(`Échec de connexion: ${errorMsg}`, 'error');
@@ -4626,7 +4661,7 @@ function updateVPNIndicator(status, label) {
   if (indicator) indicator.dataset.status = status;
   if (labelEl) labelEl.textContent = label;
 }
-function updateNASIndicator(status, label) {
+function updateNASSettingsIndicator(status, label) {
   const indicator = document.getElementById('nasStatusIndicator');
   const labelEl = document.getElementById('nasStatusLabel');
   if (indicator) indicator.dataset.status = status;
@@ -4642,10 +4677,11 @@ async function nasRefreshIndicators() {
     else updateVPNIndicator('disconnected', 'VPN : déconnecté');
   } catch { updateVPNIndicator('unknown', 'VPN : erreur de vérification'); }
   try {
-    const smb = await window.electronAPI.nasCheckSMBMount();
-    if (smb.mounted) updateNASIndicator('connected', `NAS : monté — ${smb.path}`);
-    else updateNASIndicator('disconnected', 'NAS : non monté');
-  } catch { updateNASIndicator('unknown', 'NAS : erreur de vérification'); }
+    const nasStatus = await window.electronAPI.getNASStatus();
+    const status = nasStatus.status || 'unknown';
+    const label = nasStatus.label || 'NAS : inconnu';
+    updateNASSettingsIndicator(status === 'connected' ? 'connected' : status === 'warning' ? 'warning' : status === 'disabled' ? 'unknown' : 'disconnected', label);
+  } catch { updateNASSettingsIndicator('unknown', 'NAS : erreur de vérification'); }
 }
 
 
@@ -4710,6 +4746,7 @@ async function saveSettings() {
     },
     compress: document.getElementById('settingsCompress')?.checked !== false,
     uploadToNAS: document.getElementById('settingsUploadNAS')?.checked !== false,
+    zipNasEnabled: document.getElementById('settingsZipNas')?.checked || false,
     verifyIntegrity: document.getElementById('settingsVerifyIntegrity')?.checked !== false,
     allowedVideoExtensions: state.settings.allowedVideoExtensions || ['.mp4', '.mov'],
     gofileAutoUpload: document.getElementById('gofileAutoUpload')?.checked || false,
@@ -5299,6 +5336,10 @@ function openProfileModal(profileId = null) {
   ssdPathInput.value = '';
   document.getElementById('profileSSDStudioPath').value = '';
   document.getElementById('profileEmail').value = '';
+  const mondayUserSelect = document.getElementById('profileMondayUser');
+  if (mondayUserSelect) mondayUserSelect.innerHTML = '<option value="">— Non lié —</option>';
+  const zipNasCheckbox = document.getElementById('profileZipNasEnabled');
+  if (zipNasCheckbox) zipNasCheckbox.checked = false;
   hiddenId.value = '';
   currentProfilePhoto = null;
   photoPreview.innerHTML = '<span></span>';
@@ -5330,6 +5371,8 @@ function openProfileModal(profileId = null) {
         const themeInput = document.getElementById('profileTheme');
         if (themeInput) themeInput.value = profile.theme || 'dark';
         
+        if (zipNasCheckbox) zipNasCheckbox.checked = profile.zipNasEnabled || false;
+        
         if (profile.photoPath) {
           currentProfilePhoto = profile.photoPath;
           photoPreview.style.backgroundImage = `url(file://${profile.photoPath})`;
@@ -5337,6 +5380,18 @@ function openProfileModal(profileId = null) {
           photoPreview.style.backgroundPosition = 'center';
           photoPreview.innerHTML = '';
           removePhotoBtn.style.display = 'inline-block';
+        }
+        if (profile.mondayUserId) {
+          const sel = document.getElementById('profileMondayUser');
+          if (sel) {
+            window.electronAPI.getMondayUsers().then(({ users, error }) => {
+              if (!error && users && users.length) {
+                sel.innerHTML = '<option value="">— Non lié —</option>' +
+                  users.map(u => `<option value="${escapeHtml(String(u.id))}">${escapeHtml(`${(u.name || '').trim() || u.email || u.id} (${u.email || ''})`)}</option>`).join('');
+                sel.value = profile.mondayUserId;
+              }
+            }).catch(() => {});
+          }
         }
       }
     }).catch(err => {
@@ -5370,10 +5425,14 @@ function closeProfileModal() {
     document.getElementById('profileSSDPersoPath').value = '';
     document.getElementById('profileSSDStudioPath').value = '';
     document.getElementById('profileId').value = '';
+    const mondayUserSelectReset = document.getElementById('profileMondayUser');
+    if (mondayUserSelectReset) mondayUserSelectReset.innerHTML = '<option value="">— Non lié —</option>';
     document.getElementById('profileColor1').value = '#2563eb';
     document.getElementById('profileColor2').value = '#0f172a';
     document.getElementById('profileColor3').value = '#ffffff';
     document.getElementById('profileTheme').value = 'dark';
+    const zipNasCheckbox2 = document.getElementById('profileZipNasEnabled');
+    if (zipNasCheckbox2) zipNasCheckbox2.checked = false;
   }
 }
 
@@ -5394,17 +5453,21 @@ async function saveProfile() {
   }
   
   try {
+    const mondayUserSelect = document.getElementById('profileMondayUser');
+    const mondayUserId = (mondayUserSelect?.value || '').trim() || null;
     const profileData = {
       name,
       initiales,
       email: document.getElementById('profileEmail').value.trim(),
+      mondayUserId,
       ssdPersoPath: ssdPersoPath || null,
       ssdStudioPath: ssdStudioPath || null,
       photoPath: currentProfilePhoto || null,
       color1: color1 || '#2563eb',
       color2: color2 || '#0f172a',
       color3: color3 || '#ffffff',
-      theme: theme || 'dark'
+      theme: theme || 'dark',
+      zipNasEnabled: document.getElementById('profileZipNasEnabled')?.checked || false
     };
     
     if (profileId) {
@@ -5651,6 +5714,7 @@ function showErrorModal(errorKey, technicalMessage, customActions) {
   modal.classList.add('show');
 
   window.electronAPI.sendErrorReportMail({
+    toEmail: state.selectedProfile?.email,
     errorTitle: error.title || 'Erreur inconnue',
     errorTechnical: technicalMessage || '',
     errorVulgarized: error.vulgarized || '',

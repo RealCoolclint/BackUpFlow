@@ -18,6 +18,7 @@ const NASConnector = require('./modules/nas-connector');
 const MailerManager = require('./modules/mailer');
 
 const execAsync = promisify(exec);
+const { version: appVersion } = require('./package.json');
 
 let mainWindow;
 let nomenclatureManager;
@@ -317,28 +318,6 @@ async function initializeManagers() {
   nasConnector = new NASConnector();
   mailerManager = new MailerManager(settings.resendApiKey || null);
 
-  // Demarrer le polling VPN + auto-mount NAS
-  const smbURL = settings.nas?.smbURL;
-  const nasRemotePath = settings.nas?.remotePath;
-  if (smbURL && nasRemotePath) {
-    nasConnector.startVpnPolling(smbURL, nasRemotePath);
-    nasConnector.on('vpn-status', (data) => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.webContents.send('vpn-status-update', data);
-      }
-    });
-    nasConnector.on('nas-auto-mounted', (data) => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.webContents.send('nas-auto-mounted', data);
-      }
-    });
-    nasConnector.on('nas-auto-mount-failed', (data) => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.webContents.send('nas-auto-mount-failed', data);
-      }
-    });
-  }
-
   // Configurer les destinations si disponibles
   if (settings.ssdPersoPath && settings.ssdStudioPath) {
     storageManager.setDestinations(settings.ssdPersoPath, settings.ssdStudioPath);
@@ -382,6 +361,7 @@ async function saveSettings(settings) {
 // ==================== IPC Handlers ====================
 
 // Configuration
+ipcMain.handle('get-app-version', () => appVersion);
 ipcMain.handle('get-settings', async () => {
   return await loadSettings();
 });
@@ -889,6 +869,20 @@ function getMondayColumnIds(cols) {
   };
 }
 
+ipcMain.handle('get-monday-users', async () => {
+  try {
+    const settings = await loadSettings();
+    const token = (settings.mondayApiToken || '').trim();
+    if (!token) return { users: [], error: 'Token Monday non configuré' };
+    const data = await mondayGraphQL(token, 'query { users { id name email } }');
+    const users = data?.users || [];
+    return { users };
+  } catch (err) {
+    console.error('[Monday] get-monday-users:', err);
+    return { users: [], error: err.message || 'Erreur API Monday' };
+  }
+});
+
 ipcMain.handle('monday-get-column-ids', async (event, { boardId, token }) => {
   if (!token || !boardId) return null;
   const cols = await getMondayBoardColumns(token, boardId);
@@ -1191,7 +1185,7 @@ ipcMain.handle('monday-test-connection', async (event, { token, boardId }) => {
 });
 
 // Phase B : Mise à jour d'un item Monday en fin de workflow
-ipcMain.handle('monday-update-item', async (event, { itemId, boardId, apiToken, updates }) => {
+ipcMain.handle('monday-update-item', async (event, { itemId, boardId, apiToken, updates, mondayUserId, projectName }) => {
   if (!itemId || !boardId || !apiToken) {
     const err = 'Paramètres manquants (itemId, boardId, apiToken)';
     console.error('[Monday] monday-update-item:', err);
@@ -1271,6 +1265,27 @@ ipcMain.handle('monday-update-item', async (event, { itemId, boardId, apiToken, 
     }
 
     console.log('[Monday] Mise à jour terminée avec succès');
+
+    if (mondayUserId) {
+      try {
+        await mondayGraphQL(token, `
+          mutation ($userId: ID!, $targetId: ID!, $text: String!, $targetType: NotificationTargetType!) {
+            create_notification(user_id: $userId, target_id: $targetId, text: $text, target_type: $targetType) { text }
+          }
+        `, {
+          userId: String(mondayUserId),
+          targetId: String(itemIdVal),
+          text: `✅ Backup terminé : ${projectName || 'Projet'}`,
+          targetType: 'Project'
+        });
+        console.log('[Monday] Notification envoyée à l\'utilisateur', mondayUserId);
+      } catch (notifErr) {
+        console.error('[Monday] create_notification échouée:', notifErr.message || notifErr);
+      }
+    } else {
+      console.log('[Monday] Pas de mondayUserId sur ce profil — notification ignorée');
+    }
+
     return { success: true };
   } catch (err) {
     const msg = err.message || String(err);
@@ -1309,15 +1324,21 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
     sujet,
     initiales,
     compress,
-    uploadToNAS,
     ssdPersoPath,
     ssdStudioPath,
     isSession,
     parentProjectPath,
     sessionFolderName,
     mondayItemId,
-    profileId
+    profileId,
+    zipNasEnabled
   } = workflowData;
+  
+  const uploadToNAS = !!workflowData.uploadToNAS;
+  console.log('[DEBUG NAS] workflowData.uploadToNAS brut =', workflowData.uploadToNAS);
+  console.log('[DEBUG NAS] uploadToNAS après !! =', uploadToNAS);
+  console.log('[DEBUG NAS] compress =', compress);
+  console.log('[DEBUG NAS] zipNasEnabled =', zipNasEnabled);
   
   // En mode Session : copier dans parent/SESSION_XX au lieu d'un nouveau dossier racine
   const projectName = isSession && parentProjectPath && sessionFolderName
@@ -1482,7 +1503,7 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
     let archiveResult = null;
     const ssdPersoProjectPath = path.join(finalSSDPersoPath, projectName);
 
-    const runGofile = async () => {
+    const runGofile = async (archiveResult = null) => {
       if (!gofileAutoUpload) return null;
       parallelGofileProgress = 0;
       updateGlobalProgress(0, 'gofile', gofileWeight);
@@ -1514,7 +1535,12 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
       };
       try {
         checkAborted();
-        const result = await performGofileUpload(ssdPersoProjectPath, gofileProgressCallback);
+        const compressedPath = archiveResult?.projectDir || null;
+        const result = await performGofileUpload(
+          ssdPersoProjectPath,
+          gofileProgressCallback,
+          compressedPath
+        );
         parallelGofileProgress = 100;
         updateGlobalProgress(100, 'gofile', gofileWeight);
         event.sender.send('workflow-progress', {
@@ -1574,7 +1600,7 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
         globalProgress: globalProgress,
         parallelPhase: true
       });
-      const result = await compressionManager.createProjectArchive(
+      let result = await compressionManager.createProjectArchive(
         projectName,
         ssdPersoFiles,
         tempDir,
@@ -1636,8 +1662,23 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
           event.sender.send('workflow-progress', workflowProgressData);
         },
         null,
-        checkAborted
+        checkAborted,
+        !zipNasEnabled
       );
+      if (result?.projectDir) {
+        const VIDEO_EXT = ['.mp4', '.mov', '.mxf', '.avi'];
+        const rootFiles = fs.readdirSync(result.projectDir);
+        for (const name of rootFiles) {
+          const fullPath = path.join(result.projectDir, name);
+          if (!fs.statSync(fullPath).isFile()) continue;
+          const ext = path.extname(name).toLowerCase();
+          if (!VIDEO_EXT.includes(ext)) continue;
+          const base = path.basename(name, ext);
+          const newName = base + '_compressed' + ext;
+          const newPath = path.join(result.projectDir, newName);
+          await fs.rename(fullPath, newPath);
+        }
+      }
       parallelCompressProgress = 100;
       updateGlobalProgress(100, 'compressing', compressWeight);
       event.sender.send('workflow-progress', {
@@ -1652,18 +1693,17 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
 
     const hasGofile = gofileAutoUpload;
     const hasCompress = compress && compressionManager;
-    if (hasGofile || hasCompress) {
-      const promises = [];
-      if (hasGofile) promises.push(runGofile());
-      if (hasCompress) promises.push(runCompress());
-      const results = await Promise.all(promises);
-      gofileResult = hasGofile ? results[0] : null;
-      archiveResult = hasCompress ? results[hasGofile ? 1 : 0] : null;
+    if (hasCompress) {
+      archiveResult = await runCompress();
+    }
+    if (hasGofile) {
+      gofileResult = await runGofile(archiveResult);
     }
 
     checkAborted();
 
     // Étape 3: Upload vers NAS si demandé (nécessite archiveResult de la compression)
+    // Si zipNasEnabled : upload du .zip ; sinon : upload du dossier projet
     if (uploadToNAS && archiveResult) {
         updateGlobalProgress(0, 'uploading', uploadWeight);
         event.sender.send('workflow-progress', {
@@ -1729,14 +1769,16 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
 
             // Démarrer la surveillance NAS pendant l'upload
             if (nasRemotePath) nasConnector.startPing(nasRemotePath, 10000);
+            if (nasRemotePath && nasSmbURL) nasConnector.startKeepAlive(nasSmbURL, nasRemotePath, 30000);
             let nasLostDuringUpload = false;
             const onNASDisconnected = () => { nasLostDuringUpload = true; };
             nasConnector.once('nas-disconnected', onNASDisconnected);
 
-            const uploadResult = await uploadManager.uploadProjectArchive(
-              archiveResult.zipPath,
-              projectName,
-              (progress) => {
+            const uploadResult = archiveResult.zipPath
+              ? await uploadManager.uploadProjectArchive(
+                  archiveResult.zipPath,
+                  projectName,
+                  (progress) => {
                 const stepProgress = progress.progress || 0;
                 updateGlobalProgress(stepProgress, 'uploading', uploadWeight);
                 let processedBytes = progress.processedBytes;
@@ -1757,9 +1799,35 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
                   message: progress.message || `Transfert vers NAS: ${Math.round(progress.progress || 0)}%`
                 });
               }
+            )
+              : await uploadManager.uploadProjectFolder(
+                  archiveResult.projectDir,
+                  projectName,
+                  (progress) => {
+                const stepProgress = progress.progress || 0;
+                updateGlobalProgress(stepProgress, 'uploading', uploadWeight);
+                let processedBytes = progress.processedBytes;
+                if (!processedBytes && progress.transferred && progress.total) {
+                  processedBytes = parseSizeToBytes(progress.transferred);
+                }
+                event.sender.send('workflow-progress', {
+                  step: 'uploading',
+                  status: 'active',
+                  globalProgress: globalProgress,
+                  processedBytes: processedBytes,
+                  processed: progress.transferred || progress.processed,
+                  total: progress.total,
+                  speed: progress.speed,
+                  eta: progress.eta,
+                  elapsed: progress.elapsed,
+                  file: progress.file || progress.currentFile || path.basename(archiveResult.projectDir),
+                  message: progress.message || `Transfert vers NAS: ${Math.round(progress.progress || 0)}%`
+                });
+              }
             );
 
             nasConnector.stopPing();
+            nasConnector.stopKeepAlive();
             nasConnector.removeListener('nas-disconnected', onNASDisconnected);
             await uploadManager.disconnect();
 
@@ -1784,6 +1852,7 @@ ipcMain.handle('execute-backup-workflow', async (event, workflowData) => {
             });
           } catch (uploadError) {
             nasConnector.stopPing();
+            nasConnector.stopKeepAlive();
             try { await uploadManager.disconnect(); } catch { /* ignore */ }
             throw new Error('NAS — ' + (uploadError.message || 'Échec upload'));
           }
@@ -2327,7 +2396,7 @@ ipcMain.handle('open-external-url', async (event, url) => {
 // Endpoint actuel : /uploadFile (l’ancien /upload renvoie 404).
 // FormData natif + Blob pour éviter "error-nextpart" du package form-data.
 
-async function performGofileUpload(folderPath, progressCallback) {
+async function performGofileUpload(folderPath, progressCallback, compressedFolderPath = null) {
   try {
     if (!folderPath || !fs.existsSync(folderPath)) {
       return { ok: false, error: 'Dossier introuvable : ' + (folderPath || '(vide)') };
@@ -2359,26 +2428,29 @@ async function performGofileUpload(folderPath, progressCallback) {
     }
 
     const entries = fs.readdirSync(folderPath);
-    const files = entries.filter(f => fs.statSync(path.join(folderPath, f)).isFile());
-    if (files.length === 0) {
+    const originalFiles = entries.filter(f => fs.statSync(path.join(folderPath, f)).isFile());
+    const hasCompressed = compressedFolderPath && fs.existsSync(compressedFolderPath);
+    let compressedFiles = [];
+    if (hasCompressed) {
+      const compEntries = fs.readdirSync(compressedFolderPath);
+      compressedFiles = compEntries.filter(f => fs.statSync(path.join(compressedFolderPath, f)).isFile());
+    }
+
+    if (originalFiles.length === 0 && (!hasCompressed || compressedFiles.length === 0)) {
       return { ok: false, error: 'Le dossier projet est vide.' };
     }
 
+    const totalFiles = originalFiles.length + (hasCompressed ? compressedFiles.length : 0);
     let downloadPage = null;
     let code = null;
     let folderId = null;
     let guestToken = null;
 
-    for (let i = 0; i < files.length; i++) {
-      const fileName = files[i];
-      const filePath = path.join(folderPath, fileName);
-
-      progressCallback({ done: i, total: files.length, fileName });
-
+    async function uploadFile(filePath, fileName, targetFolderId) {
       const form = new FormData();
       form.append('file', fs.createReadStream(filePath), fileName);
-      if (folderId) {
-        form.append('folderId', folderId);
+      if (targetFolderId) {
+        form.append('folderId', targetFolderId);
       }
 
       const uploadUrl = `https://${server}.gofile.io/uploadFile`;
@@ -2397,6 +2469,42 @@ async function performGofileUpload(folderPath, progressCallback) {
         req.on('error', reject);
         form.pipe(req);
       });
+      const uploadData = JSON.parse(rawText);
+      if (uploadData.status !== 'ok') {
+        const msg = uploadData.message || uploadData.status || 'erreur inconnue';
+        throw new Error(`Échec upload "${fileName}" : ${msg}`);
+      }
+      return uploadData;
+    }
+
+    // Upload des originaux dans le dossier racine
+    for (let i = 0; i < originalFiles.length; i++) {
+      const fileName = originalFiles[i];
+      const filePath = path.join(folderPath, fileName);
+
+      progressCallback({ done: i, total: totalFiles, fileName });
+
+      const rawText = await new Promise((resolve, reject) => {
+        const form = new FormData();
+        form.append('file', fs.createReadStream(filePath), fileName);
+        if (folderId) form.append('folderId', folderId);
+
+        const uploadUrl = `https://${server}.gofile.io/uploadFile`;
+        const urlObj = new URL(uploadUrl);
+        const req = https.request({
+          hostname: urlObj.hostname,
+          path: urlObj.pathname,
+          method: 'POST',
+          headers: { ...form.getHeaders(), ...(guestToken ? { 'Authorization': `Bearer ${guestToken}` } : {}) }
+        }, (res) => {
+          let body = '';
+          res.on('data', chunk => body += chunk);
+          res.on('end', () => resolve(body));
+        });
+        req.on('error', reject);
+        form.pipe(req);
+      });
+
       let uploadData;
       try {
         uploadData = JSON.parse(rawText);
@@ -2424,7 +2532,31 @@ async function performGofileUpload(folderPath, progressCallback) {
       }
     }
 
-    progressCallback({ done: files.length, total: files.length, fileName: null });
+    // Si compressedFolderPath fourni : upload des compressés dans le même dossier racine
+    if (hasCompressed) {
+      let doneCount = originalFiles.length;
+      for (let i = 0; i < compressedFiles.length; i++) {
+        const fileName = compressedFiles[i];
+        const filePath = path.join(compressedFolderPath, fileName);
+
+        progressCallback({ done: doneCount, total: totalFiles, fileName });
+
+        const uploadRes = await uploadFile(filePath, fileName, folderId);
+        if (uploadRes.data) {
+          if (!folderId) {
+            folderId = uploadRes.data.parentFolder || null;
+            guestToken = uploadRes.data.guestToken || null;
+          }
+          const newPage = uploadRes.data.downloadPage
+            || uploadRes.data.pageDownload?.fullUrl
+            || (uploadRes.data.code ? `https://gofile.io/d/${uploadRes.data.code}` : null);
+          if (newPage) downloadPage = newPage;
+        }
+        doneCount++;
+      }
+    }
+
+    progressCallback({ done: totalFiles, total: totalFiles, fileName: null });
 
     if (!downloadPage && code) {
       downloadPage = `https://gofile.io/d/${code}`;

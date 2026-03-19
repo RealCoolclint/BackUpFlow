@@ -585,7 +585,7 @@ class CompressionManager {
    * @param {Function} onProgress - Callback de progression
    * @param {string} audioBackupPath - Chemin optionnel vers un fichier audio .wav à ajouter
    */
-  async createProjectArchive(projectName, files, tempDir, preset = null, onProgress = null, audioBackupPath = null, checkAborted = null) {
+  async createProjectArchive(projectName, files, tempDir, preset = null, onProgress = null, audioBackupPath = null, checkAborted = null, skipZip = false) {
     // Créer le dossier temporaire du projet
     const projectTempDir = path.join(tempDir, projectName);
     await fs.remove(projectTempDir);
@@ -623,13 +623,21 @@ class CompressionManager {
       }
     );
     
-    // Créer le ZIP avec le nom du projet
+    if (skipZip) {
+      return {
+        projectDir: projectTempDir,
+        zipPath: null,
+        zipSize: null,
+        compressionResults
+      };
+    }
+
     const zipPath = path.join(tempDir, `${projectName}.zip`);
-    
+
     if (onProgress) {
       onProgress({ step: 'creating_zip_nas', progress: 0, message: 'Création du ZIP pour le NAS...' });
     }
-    
+
     const zipResult = await this.createZip(projectTempDir, zipPath, (progress) => {
       if (onProgress) {
         onProgress({
@@ -646,7 +654,7 @@ class CompressionManager {
         });
       }
     });
-    
+
     return {
       projectDir: projectTempDir,
       zipPath: zipResult.zipPath,
@@ -705,6 +713,15 @@ class CompressionManager {
             });
           }
         });
+        
+        const originalSize = fs.statSync(videoFile.path).size;
+        const compressedSize = fs.statSync(outputPath).size;
+        
+        if (compressedSize >= originalSize) {
+          fs.unlinkSync(outputPath);
+          console.log(`[HandBrake] Fichier compressé plus lourd que l'original (${compressedSize} >= ${originalSize}) — fichier original conservé pour la suite du workflow`);
+          fs.copySync(videoFile.path, outputPath);
+        }
         
         results.push({ original: videoFile, compressed: outputPath, success: true });
       } catch (error) {
