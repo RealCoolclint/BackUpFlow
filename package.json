@@ -34,16 +34,16 @@
   "build": {
     "asar": false,
     "npmRebuild": false,
-    "appId": "fr.letudiant.backupflow",
-    "productName": "BackUpFlow Studio",
+    "appId": "com.cellulervideo.backupflow",
+    "productName": "BackUpFlow",
     "copyright": "Copyright © 2025 L'Étudiant",
     "mac": {
       "category": "public.app-category.utilities",
-      "target": [{ "target": "dir" }],
+      "target": [{ "target": "dmg" }, { "target": "dir" }],
       "icon": "build/icon.icns"
     },
     "dmg": {
-      "title": "BackUpFlow Studio",
+      "title": "BackUpFlow",
       "sign": false,
       "window": {
         "width": 540,

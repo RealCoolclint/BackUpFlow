@@ -101,93 +101,85 @@ document.addEventListener('DOMContentLoaded', async () => {
     appV.addEventListener('click', openChangelogModal);
   }
 
-  try {
-    const hour = new Date().getHours();
-    let jingleId;
-    if (hour >= 6 && hour < 12)       jingleId = 'jingleMatin';
-    else if (hour >= 12 && hour < 14)  jingleId = 'jingleMidi';
-    else if (hour >= 14 && hour < 19)  jingleId = 'jingleAprem';
-    else                               jingleId = 'jingleSoir';
+  const _sessionConnected = false;
 
-    const jingle = document.getElementById(jingleId);
-    if (jingle) {
-      jingle.volume = 0.7;
-      jingle.play().catch(err => {
-        console.log('Impossible de jouer le jingle:', err);
-      });
-    }
-  } catch (e) {
-    console.log('Erreur jingle:', e);
-  }
-  
-  // Démarrer l'animation de splash screen
-  const splashScreen = document.getElementById('splashScreen');
-  const appContainer = document.querySelector('.app-container');
-  
-  // Durée totale de l'animation : 3.7s (0.5 + 1 + 1 + 1.2)
-  const totalAnimationDuration = 3700; // 3.7 secondes en millisecondes
-  
-  // Phase 1: Écran blanc avec logo en fondu commence + zoom in progressif commence (0.5s)
-  // Opacité : commence à 0%, progresse vers 100% sur 1.5s (phase 1 + phase 2)
-  // Zoom : commence à 90%, progresse vers 110% sur 3.7s total
-  document.body.style.background = '#ffffff';
-  const splashLogo = splashScreen ? splashScreen.querySelector('.splash-logo') : null;
-  
-  if (splashScreen) {
-    splashScreen.style.opacity = '0';
-    splashScreen.style.display = 'flex';
-    splashScreen.style.transition = 'opacity 1.5s ease-in'; // Fondu sur phase 1 + phase 2 (1.5s)
-    setTimeout(() => {
-      if (splashScreen) splashScreen.style.opacity = '1'; // Arrivera à 100% à la fin de la phase 2
-    }, 10);
-  }
-  
-  // Démarrer le zoom progressif continu : 90% → 110% sur 3.7s
-  if (splashLogo) {
-    splashLogo.style.transform = 'scale(0.9)'; // Taille initiale 90%
-    splashLogo.style.transition = 'transform 3.7s ease-out'; // Zoom sur toute la durée (3.7s)
-    // Lancer le zoom vers 110% immédiatement
-    requestAnimationFrame(() => {
-      if (splashLogo) {
-        splashLogo.style.transform = 'scale(1.1)'; // Taille finale 110%
+  if (!_sessionConnected) {
+    try {
+      const hour = new Date().getHours();
+      let jingleId;
+      if (hour >= 6 && hour < 12)       jingleId = 'jingleMatin';
+      else if (hour >= 12 && hour < 14)  jingleId = 'jingleMidi';
+      else if (hour >= 14 && hour < 19)  jingleId = 'jingleAprem';
+      else                               jingleId = 'jingleSoir';
+
+      const jingle = document.getElementById(jingleId);
+      if (jingle) {
+        jingle.volume = 0.7;
+        jingle.play().catch(err => {
+          console.log('Impossible de jouer le jingle:', err);
+        });
       }
-    });
+    } catch (e) {
+      console.log('Erreur jingle:', e);
+    }
   }
-  
-  await new Promise(resolve => setTimeout(resolve, 500)); // Phase 1 : 0.5s
-  
-  // Phase 2: Fondu au noir avec logo opacité qui continue vers 100% + zoom continue (1s)
-  // Opacité : continue vers 100%, arrivera à 100% à la fin de cette phase
-  document.body.style.background = '#000000';
-  document.body.style.transition = 'background 0.5s ease-out';
-  // Le logo continue son fondu vers 100% et le zoom continue automatiquement
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Phase 2 : 1s
-  
-  // Phase 3: Full opacité, zoom continue (1s)
-  // Le logo garde opacité 100% et le zoom continue automatiquement
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Phase 3 : 1s
-  
-  // Phase 4: Logo opacité 100% → 0% puis fond noir → blanc + zoom continue jusqu'à 110% (1.2s)
-  // Étape 1: Logo opacité 100% → 0% (0.6s)
-  if (splashScreen) {
-    splashScreen.style.transition = 'opacity 0.6s ease-out';
-    splashScreen.style.opacity = '0'; // Opacité 100% → 0% pendant 0.6s
+  runSplash();
+
+function runSplash(onComplete) {
+  const dg = document.getElementById('dot-grid');
+  const rs = document.getElementById('ring-svg');
+  const rd = document.getElementById('ring-draw');
+  const pe = document.getElementById('patch-el');
+  const ve = document.getElementById('ver-el');
+  const fe = document.getElementById('flash-el');
+
+  if (ve && window.APP_VERSION) ve.textContent = window.APP_VERSION;
+
+  [dg, rs, pe, ve, fe].forEach(el => {
+    if (!el) return;
+    el.style.transition = 'none';
+    el.style.opacity = '0';
+  });
+  if (rd) { rd.style.transition = 'none'; rd.style.strokeDashoffset = '722'; }
+  if (pe) pe.style.transform = 'scale(0.88) rotate(5deg)';
+  if (dg) void dg.offsetHeight;
+
+  // Grille de points
+  if (dg) {
+    const ctx = dg.getContext('2d');
+    dg.width = window.innerWidth;
+    dg.height = window.innerHeight;
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    for (let x = 0; x < dg.width; x += 28)
+      for (let y = 0; y < dg.height; y += 28) {
+        ctx.beginPath(); ctx.arc(x, y, 0.8, 0, Math.PI * 2); ctx.fill();
+      }
   }
-  // Le zoom continue jusqu'à 110% à la fin de cette phase (déjà en cours)
-  await new Promise(resolve => setTimeout(resolve, 600)); // Attendre fin du fondu logo
-  
-  // Étape 2: Fond passe du noir au blanc (0.6s)
-  document.body.style.transition = 'background 0.6s ease-in';
-  document.body.style.background = '#ffffff';
-  await new Promise(resolve => setTimeout(resolve, 600)); // Attendre fin du fondu fond
-  
-  // Durée totale phase 4 : 1.2s
-  
-  // Cacher la splash screen et afficher l'app
-  if (splashScreen) splashScreen.style.display = 'none';
-  if (appContainer) appContainer.style.opacity = '1';
-  document.body.style.background = '';
-  
+
+  const t = (fn, ms) => setTimeout(fn, ms);
+
+  t(() => { if (dg) { dg.style.transition = 'opacity 0.7s'; dg.style.opacity = '1'; } }, 180);
+  t(() => { if (rs) { rs.style.transition = 'opacity 0.3s'; rs.style.opacity = '1'; } }, 350);
+  t(() => { if (rd) { rd.style.transition = 'stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)'; rd.style.strokeDashoffset = '0'; } }, 410);
+  t(() => {
+    if (pe) {
+      pe.style.transition = 'opacity 1.8s cubic-bezier(0.16,1,0.3,1), transform 2.5s cubic-bezier(0.16,1,0.3,1)';
+      pe.style.opacity = '1';
+      pe.style.transform = 'scale(1) rotate(0deg)';
+    }
+  }, 550);
+  t(() => { if (ve) { ve.style.transition = 'opacity 0.5s'; ve.style.opacity = '1'; } }, 1650);
+  t(() => { if (fe) { fe.style.transition = 'opacity 0.22s ease-in'; fe.style.opacity = '1'; } }, 4000);
+  t(() => {
+    if (fe) { fe.style.transition = 'opacity 0.5s ease-out'; fe.style.opacity = '0'; }
+    const splash = document.getElementById('splashScreen');
+    if (splash) splash.style.display = 'none';
+    const app = document.querySelector('.app-container');
+    if (app) app.style.opacity = '1';
+    if (onComplete) onComplete();
+  }, 4230);
+}
+
   await initializeApp();
   setupEventListeners();
   await loadSettings();
@@ -735,6 +727,17 @@ function setupEventListeners() {
     document.getElementById('profileSSDStudioPath').value = '';
   });
   document.getElementById('selectProfilePhotoBtn').addEventListener('click', selectProfilePhoto);
+  document.getElementById('select-profile-photo-btn-import')?.addEventListener('click', async () => {
+    const filePath = await window.electronAPI.selectProfilePhoto();
+    if (filePath) {
+      currentProfilePhoto = filePath;
+      const photoPreview = document.getElementById('profile-photo-preview');
+      if (photoPreview) photoPreview.style.backgroundImage = `url(file://${filePath})`;
+      document.getElementById('profile-photo-imported-label').style.display = 'inline';
+      const avatarGrid = document.getElementById('profile-avatar-grid');
+      if (avatarGrid) avatarGrid.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+    }
+  });
   document.getElementById('removeProfilePhotoBtn').addEventListener('click', removeProfilePhoto);
   
   const profileMondayUserSelect = document.getElementById('profileMondayUser');
@@ -5320,6 +5323,8 @@ function displayProfileHeader(profile) {
   }
 }
 
+const AVATARS = Array.from({length: 28}, (_, i) => `avatar_${String(i+1).padStart(2,'0')}`);
+
 function openProfileModal(profileId = null) {
   const modal = document.getElementById('profileModal');
   const title = document.getElementById('profileModalTitle');
@@ -5358,6 +5363,26 @@ function openProfileModal(profileId = null) {
         ssdPathInput.value = profile.ssdPersoPath || '';
         document.getElementById('profileSSDStudioPath').value = profile.ssdStudioPath || '';
         document.getElementById('profileEmail').value = profile.email || '';
+        // Rendre la grille d'avatars
+        const avatarGrid = document.getElementById('profile-avatar-grid');
+        if (avatarGrid) {
+          avatarGrid.innerHTML = AVATARS.map(id => `
+            <div class="avatar-option ${(profile?.avatar === id) ? 'selected' : ''}" data-avatar="${id}">
+              <img src="assets/avatars/${id}.jpeg" style="width:48px;height:48px;border-radius:50%;object-fit:cover;">
+            </div>
+          `).join('');
+          avatarGrid.querySelectorAll('.avatar-option').forEach(el => {
+            el.addEventListener('click', () => {
+              avatarGrid.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+              el.classList.add('selected');
+              currentProfilePhoto = null;
+              document.getElementById('profile-photo-imported-label').style.display = 'none';
+            });
+          });
+        }
+        // Checkbox admin
+        const adminCheckbox = document.getElementById('profileIsAdmin');
+        if (adminCheckbox) adminCheckbox.checked = profile?.isAdmin === true;
         
         // Charger les couleurs
         const color1Input = document.getElementById('profileColor1');
@@ -5467,7 +5492,9 @@ async function saveProfile() {
       color2: color2 || '#0f172a',
       color3: color3 || '#ffffff',
       theme: theme || 'dark',
-      zipNasEnabled: document.getElementById('profileZipNasEnabled')?.checked || false
+      zipNasEnabled: document.getElementById('profileZipNasEnabled')?.checked || false,
+      isAdmin: document.getElementById('profileIsAdmin')?.checked || false,
+      avatar: document.getElementById('profile-avatar-grid')?.querySelector('.avatar-option.selected')?.dataset?.avatar || null,
     };
     
     if (profileId) {

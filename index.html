@@ -10,13 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="light-theme">
+<body class="dark-theme">
     <!-- Splash Screen -->
-    <div id="splashScreen" class="splash-screen">
-        <div class="splash-logo-container">
-            <img src="assets/LOGO.png" alt="BACKUPFLOW" class="splash-logo">
-            <span id="splashVersion" class="splash-version"></span>
-        </div>
+    <div id="splashScreen" style="position:fixed;inset:0;background:#0a0f1e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;">
+      <canvas id="dot-grid" style="position:absolute;inset:0;opacity:0;"></canvas>
+      <svg id="ring-svg" viewBox="0 0 260 260" style="position:absolute;width:260px;height:260px;transform:translate(-50%,-50%) rotate(-90deg);left:50%;top:50%;opacity:0;">
+        <circle cx="130" cy="130" r="122" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <circle cx="130" cy="130" r="115" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="722" stroke-dashoffset="722" id="ring-draw"/>
+        <circle cx="130" cy="130" r="108" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      </svg>
+      <video id="patch-el" src="assets/ambiance-backupflow.mp4"
+             autoplay loop muted playsinline
+             style="width:155px;height:155px;border-radius:50%;object-fit:cover;opacity:0;transform:scale(0.88) rotate(5deg);position:relative;z-index:2;"></video>
+      <div id="ver-el" style="color:white;font-family:'Lato',sans-serif;font-weight:700;font-size:7.5px;text-transform:uppercase;letter-spacing:0.22em;margin-top:22px;opacity:0;position:relative;z-index:2;"></div>
+      <div id="flash-el" style="position:absolute;inset:0;background:white;opacity:0;pointer-events:none;z-index:10;"></div>
     </div>
     <!-- Barre supérieure pour le drag de la fenêtre (macOS affiche ses propres traffic lights natifs) -->
     <div class="title-bar"></div>
@@ -25,7 +32,7 @@
         <!-- Top Bar -->
         <header class="top-bar">
             <div class="top-bar-brand">
-                <img src="assets/LOGO.png" alt="BACKUPFLOW" class="app-logo">
+                <img src="assets/PATCH_BackUpFlow.png" alt="BackUpFlow" class="app-patch-header">
                 <span id="appVersion" class="app-version"></span>
             </div>
             <nav class="top-bar-nav">
@@ -51,7 +58,6 @@
                     <span id="nasIndicatorLabel">NAS</span>
                 </div>
                 <button id="themeToggle" class="theme-toggle">MODE SOMBRE</button>
-                <button id="quitBtn" class="quit-btn">QUITTER</button>
             </div>
         </header>
 
@@ -793,6 +799,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group" style="margin-top:16px;">
+                  <label class="form-label">AVATAR</label>
+                  <div id="profile-avatar-grid" class="profile-avatar-grid"></div>
+                  <div style="margin-top:10px;display:flex;align-items:center;gap:10px;">
+                    <button type="button" class="btn btn-secondary btn-sm" id="select-profile-photo-btn-import">Importer une photo</button>
+                    <span id="profile-photo-imported-label" style="font-size:0.8em;color:var(--text-secondary);display:none;">Photo importée ✓</span>
+                  </div>
+                </div>
                 
                 <div class="form-group">
                     <label>Palette de couleurs personnalisée</label>
@@ -840,6 +854,12 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelProfileBtn">Annuler</button>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="profileIsAdmin">
+                    <span>Accès administrateur</span>
+                  </label>
+                </div>
                 <button class="btn btn-primary" id="saveProfileBtn">Enregistrer</button>
             </div>
         </div>
