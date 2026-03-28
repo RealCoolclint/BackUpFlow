@@ -131,5 +131,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   sendBatchSummaryMail: (data) => ipcRenderer.invoke('send-batch-summary-mail', data),
   sendWorkflowStoppedMail: (params) => ipcRenderer.invoke('send-workflow-stopped-mail', params),
   sendErrorReportMail: (params) => ipcRenderer.invoke('send-error-report-mail', params),
-  testResendConnection: (apiKey) => ipcRenderer.invoke('test-resend-connection', apiKey)
+  testResendConnection: (apiKey) => ipcRenderer.invoke('test-resend-connection', apiKey),
+  getLauncherSession: () => ipcRenderer.invoke('get-launcher-session'),
 });

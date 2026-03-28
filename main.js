@@ -19,6 +19,7 @@ const MailerManager = require('./modules/mailer');
 
 const execAsync = promisify(exec);
 const { version: appVersion } = require('./package.json');
+const { readLauncherSession } = require('./modules/session-reader');
 
 let mainWindow;
 let nomenclatureManager;
@@ -261,6 +262,8 @@ ipcMain.on('app-quit', () => {
 app.whenReady().then(async () => {
   // Initialiser les managers
   await initializeManagers();
+  global.launcherSession = await readLauncherSession();
+  console.log('[Session] mode:', global.launcherSession.connected ? 'connecté' : 'standalone');
   createWindow();
   
   app.on('activate', () => {
@@ -362,6 +365,7 @@ async function saveSettings(settings) {
 
 // Configuration
 ipcMain.handle('get-app-version', () => appVersion);
+ipcMain.handle('get-launcher-session', () => global.launcherSession || { connected: false });
 ipcMain.handle('get-settings', async () => {
   return await loadSettings();
 });

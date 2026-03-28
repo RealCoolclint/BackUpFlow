@@ -101,7 +101,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     appV.addEventListener('click', openChangelogModal);
   }
 
-  const _sessionConnected = false;
+  const _launcherSession = await window.electronAPI.getLauncherSession();
+  const _sessionConnected = _launcherSession.connected;
 
   if (!_sessionConnected) {
     try {
@@ -187,7 +188,48 @@ function runSplash(onComplete) {
   updateProjectNamePreview();
   
   // Toujours charger les profils sur la home au démarrage
-  await loadProfiles();
+  if (_launcherSession.connected) {
+    // Mode connecté — afficher l'écran de confirmation
+    const sessionView = document.getElementById('sessionView');
+    const homeView = document.getElementById('homeView');
+    if (sessionView && homeView) {
+      homeView.classList.remove('active');
+      sessionView.style.display = '';
+      sessionView.classList.add('active');
+      const firstName = _launcherSession.profileName
+        ? _launcherSession.profileName.split(' ')[0] : '';
+      const initials = _launcherSession.profileName
+        ? _launcherSession.profileName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
+      const nameEl = document.getElementById('session-profile-name');
+      const initialsEl = document.getElementById('session-avatar-initials');
+      if (nameEl) nameEl.textContent = _launcherSession.profileName || '';
+      if (initialsEl) initialsEl.textContent = initials;
+
+      document.getElementById('session-continue-btn').addEventListener('click', async () => {
+        // Charger les profils locaux et sélectionner celui qui correspond
+        const profiles = await window.electronAPI.getProfiles();
+        const match = profiles.find(p => p.id === _launcherSession.profileId);
+        if (match) {
+          selectProfile(match.id);
+        } else {
+          // Profil inconnu localement → fallback mode standalone
+          sessionView.classList.remove('active');
+          sessionView.style.display = 'none';
+          homeView.classList.add('active');
+          await loadProfiles();
+        }
+      });
+
+      document.getElementById('session-change-btn').addEventListener('click', async () => {
+        sessionView.classList.remove('active');
+        sessionView.style.display = 'none';
+        homeView.classList.add('active');
+        await loadProfiles();
+      });
+    }
+  } else {
+    await loadProfiles();
+  }
 });
 
 async function initializeApp() {
