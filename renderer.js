@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const _launcherSession = await window.electronAPI.getLauncherSession();
+  window._launcherSession = _launcherSession;
   const _sessionConnected = _launcherSession.connected;
 
   if (!_sessionConnected) {
@@ -205,19 +206,10 @@ function runSplash(onComplete) {
       if (nameEl) nameEl.textContent = _launcherSession.profileName || '';
       if (initialsEl) initialsEl.textContent = initials;
 
-      document.getElementById('session-continue-btn').addEventListener('click', async () => {
-        // Charger les profils locaux et sélectionner celui qui correspond
-        const profiles = await window.electronAPI.getProfiles();
-        const match = profiles.find(p => p.id === _launcherSession.profileId);
-        if (match) {
-          selectProfile(match.id);
-        } else {
-          // Profil inconnu localement → fallback mode standalone
-          sessionView.classList.remove('active');
-          sessionView.style.display = 'none';
-          homeView.classList.add('active');
-          await loadProfiles();
-        }
+      document.getElementById('session-continue-btn').addEventListener('click', () => {
+        sessionView.classList.remove('active');
+        sessionView.style.display = 'none';
+        selectLauncherProfile(_launcherSession);
       });
 
       document.getElementById('session-change-btn').addEventListener('click', async () => {
@@ -843,7 +835,15 @@ function setupEventListeners() {
 // Navigation
 function switchView(viewName) {
   console.log('=== switchView appelé avec:', viewName);
-  
+
+  if (viewName === 'home' && window._launcherSession && window._launcherSession.connected) {
+    const sv = document.getElementById('sessionView');
+    const hv = document.getElementById('homeView');
+    document.querySelectorAll('.view').forEach(v => { v.classList.remove('active'); v.style.display = ''; });
+    if (sv) { sv.style.display = ''; sv.classList.add('active'); }
+    return;
+  }
+
   // Protection des espaces : obliger à choisir un profil pour accéder au reste
   if (viewName !== 'home' && !state.selectedProfile) {
     showNotification('Veuillez d\'abord sélectionner un profil', 'warning');
@@ -5227,6 +5227,35 @@ async function renderArchivedProfiles() {
       <button class="btn btn-secondary btn-sm" onclick="restoreProfile('${p.id}')">Restaurer</button>
     </div>
   `).join('');
+}
+
+async function selectLauncherProfile(session) {
+  // Profil construit depuis la session Launcher — pas de lookup local
+  const profile = {
+    id: session.profileId,
+    name: session.profileName || 'Utilisateur',
+    firstName: session.profileName ? session.profileName.split(' ')[0] : '',
+    lastName: session.profileName ? session.profileName.split(' ').slice(1).join(' ') : '',
+    initiales: session.profileName
+      ? session.profileName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+      : '?',
+    role: session.profileRole || 'user',
+    isAdmin: session.profileRole === 'admin',
+    fromLauncher: true
+  };
+
+  state.selectedProfile = profile;
+  applyProfileTheme('dark');
+  displayProfileHeader(profile);
+
+  if (profile.initiales) {
+    const el = document.getElementById('projectInitiales');
+    if (el) { el.value = profile.initiales; state.workflow.initiales = profile.initiales; }
+  }
+
+  updateProjectNamePreview();
+  showNotification(`Profil "${profile.name}" chargé via Launcher`, 'success');
+  switchView('workflow');
 }
 
 async function selectProfile(profileId) {
