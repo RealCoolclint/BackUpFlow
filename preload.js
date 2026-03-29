@@ -133,4 +133,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   sendErrorReportMail: (params) => ipcRenderer.invoke('send-error-report-mail', params),
   testResendConnection: (apiKey) => ipcRenderer.invoke('test-resend-connection', apiKey),
   getLauncherSession: () => ipcRenderer.invoke('get-launcher-session'),
+  spawnLauncher: () => ipcRenderer.invoke('spawn-launcher'),
 });

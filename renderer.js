@@ -189,38 +189,115 @@ function runSplash(onComplete) {
   updateProjectNamePreview();
   
   // Toujours charger les profils sur la home au démarrage
-  if (_launcherSession.connected) {
-    // Mode connecté — afficher l'écran de confirmation
+  function showSessionView(session) {
     const sessionView = document.getElementById('sessionView');
-    const homeView = document.getElementById('homeView');
-    if (sessionView && homeView) {
-      homeView.classList.remove('active');
-      sessionView.style.display = '';
-      sessionView.classList.add('active');
-      const firstName = _launcherSession.profileName
-        ? _launcherSession.profileName.split(' ')[0] : '';
-      const initials = _launcherSession.profileName
-        ? _launcherSession.profileName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
-      const nameEl = document.getElementById('session-profile-name');
-      const initialsEl = document.getElementById('session-avatar-initials');
-      if (nameEl) nameEl.textContent = _launcherSession.profileName || '';
-      if (initialsEl) initialsEl.textContent = initials;
-
+    const waitingView = document.getElementById('waitingView');
+    if (!sessionView) return;
+    if (waitingView) { waitingView.classList.remove('active'); waitingView.style.display = 'none'; }
+    sessionView.style.display = '';
+    sessionView.classList.add('active');
+    const initials = session.profileName
+      ? session.profileName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
+    const nameEl = document.getElementById('session-profile-name');
+    const initialsEl = document.getElementById('session-avatar-initials');
+    if (nameEl) nameEl.textContent = session.profileName || '';
+    if (initialsEl) initialsEl.textContent = initials;
+    const continueBtn = document.getElementById('session-continue-btn');
+    const changeBtn = document.getElementById('session-change-btn');
+    if (continueBtn) {
+      continueBtn.replaceWith(continueBtn.cloneNode(true));
       document.getElementById('session-continue-btn').addEventListener('click', () => {
         sessionView.classList.remove('active');
         sessionView.style.display = 'none';
-        selectLauncherProfile(_launcherSession);
-      });
-
-      document.getElementById('session-change-btn').addEventListener('click', async () => {
-        sessionView.classList.remove('active');
-        sessionView.style.display = 'none';
-        homeView.classList.add('active');
-        await loadProfiles();
+        selectLauncherProfile(session);
       });
     }
+    if (changeBtn) {
+      changeBtn.replaceWith(changeBtn.cloneNode(true));
+      document.getElementById('session-change-btn').addEventListener('click', () => {
+        showProfileSwitchModal();
+      });
+    }
+  }
+
+  function showWaitingView() {
+    const waitingView = document.getElementById('waitingView');
+    const sessionView = document.getElementById('sessionView');
+    if (!waitingView) return;
+    if (sessionView) { sessionView.classList.remove('active'); sessionView.style.display = 'none'; }
+    waitingView.style.display = 'flex';
+    waitingView.classList.add('active');
+    const statusEl = document.getElementById('waitingStatus');
+    const launchBtn = document.getElementById('waitingLaunchBtn');
+    if (launchBtn) {
+      launchBtn.replaceWith(launchBtn.cloneNode(true));
+      document.getElementById('waitingLaunchBtn').addEventListener('click', async () => {
+        if (statusEl) statusEl.textContent = 'Ouverture de Launcher…';
+        await window.electronAPI.spawnLauncher();
+      });
+    }
+    let pollInterval = setInterval(async () => {
+      const session = await window.electronAPI.getLauncherSession();
+      if (session && session.connected) {
+        clearInterval(pollInterval);
+        window._launcherSession = session;
+        showSessionView(session);
+      }
+    }, 2000);
+  }
+
+  function showProfileSwitchModal() {
+    const modal = document.getElementById('profileSwitchModal');
+    const grid = document.getElementById('profileSwitchGrid');
+    if (!modal || !grid) return;
+    const profiles = (window._launcherSession && window._launcherSession.allProfiles) || [];
+    grid.innerHTML = profiles.map(p => {
+      const bf = (p.appSettings && p.appSettings.backupflow) || {};
+      const initials = bf.initiales || (p.name ? p.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?');
+      const color = bf.color || '#2563eb';
+      const avatarStyle = p.avatar
+        ? `background:${color};background-image:url(${p.avatar});background-size:cover;background-position:center;`
+        : `background:${color};display:flex;align-items:center;justify-content:center;`;
+      const avatarContent = p.avatar ? '' : initials;
+      return `<button class="profile-switch-card" data-profile-id="${p.id}" style="background:var(--bg-tertiary);border:2px solid transparent;border-radius:12px;padding:16px;cursor:pointer;text-align:center;transition:border-color 0.2s;">
+        <div style="width:48px;height:48px;border-radius:50%;${avatarStyle}margin:0 auto 8px;font-size:1.1rem;font-weight:700;color:#fff;">${avatarContent}</div>
+        <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">${p.name}</div>
+      </button>`;
+    }).join('');
+    grid.querySelectorAll('.profile-switch-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const profileId = btn.dataset.profileId;
+        const profile = profiles.find(p => p.id === profileId);
+        if (!profile) return;
+        modal.style.display = 'none';
+        const sessionView = document.getElementById('sessionView');
+        if (sessionView) { sessionView.classList.remove('active'); sessionView.style.display = 'none'; }
+        selectLauncherProfile({
+          connected: true,
+          profileId: profile.id,
+          profileName: profile.name,
+          profileRole: (profile.appSettings && profile.appSettings.backupflow && profile.appSettings.backupflow.role) || 'user',
+          appSettings: profile.appSettings || {},
+          allProfiles: profiles,
+          apiKeys: window._launcherSession.apiKeys || {}
+        });
+      });
+    });
+    const closeBtn = document.getElementById('profileSwitchCloseBtn');
+    if (closeBtn) {
+      closeBtn.replaceWith(closeBtn.cloneNode(true));
+      document.getElementById('profileSwitchCloseBtn').addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    }
+    modal.style.display = 'flex';
+  }
+  window.showProfileSwitchModal = showProfileSwitchModal;
+
+  if (_launcherSession.connected) {
+    showSessionView(_launcherSession);
   } else {
-    await loadProfiles();
+    showWaitingView();
   }
 });
 
@@ -751,29 +828,31 @@ function setupEventListeners() {
   });
   
   // Profils (page d'accueil)
-  document.getElementById('addProfileBtn').addEventListener('click', () => openProfileModal());
-  document.getElementById('closeProfileModal').addEventListener('click', closeProfileModal);
-  document.getElementById('cancelProfileBtn').addEventListener('click', closeProfileModal);
-  document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
-  document.getElementById('selectProfileSSDPersoBtn').addEventListener('click', () => selectProfileDestination('perso'));
-  document.getElementById('selectProfileSSDStudioBtn').addEventListener('click', () => selectProfileDestination('studio'));
-  document.getElementById('resetProfileSSDStudioBtn')?.addEventListener('click', () => {
-    document.getElementById('profileSSDStudioPath').value = '';
-  });
-  document.getElementById('selectProfilePhotoBtn').addEventListener('click', selectProfilePhoto);
-  document.getElementById('select-profile-photo-btn-import')?.addEventListener('click', async () => {
+  const addProfileBtn = document.getElementById('addProfileBtn');
+  if (addProfileBtn) addProfileBtn.addEventListener('click', () => openProfileModal());
+  const _safe = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
+  _safe('closeProfileModal', closeProfileModal);
+  _safe('cancelProfileBtn', closeProfileModal);
+  _safe('saveProfileBtn', saveProfile);
+  _safe('selectProfileSSDPersoBtn', () => selectProfileDestination('perso'));
+  _safe('selectProfileSSDStudioBtn', () => selectProfileDestination('studio'));
+  _safe('resetProfileSSDStudioBtn', () => { const el = document.getElementById('profileSSDStudioPath'); if (el) el.value = ''; });
+  _safe('selectProfilePhotoBtn', selectProfilePhoto);
+  _safe('removeProfilePhotoBtn', removeProfilePhoto);
+  const _importBtn = document.getElementById('select-profile-photo-btn-import');
+  if (_importBtn) _importBtn.addEventListener('click', async () => {
     const filePath = await window.electronAPI.selectProfilePhoto();
     if (filePath) {
       currentProfilePhoto = filePath;
       const photoPreview = document.getElementById('profile-photo-preview');
       if (photoPreview) photoPreview.style.backgroundImage = `url(file://${filePath})`;
-      document.getElementById('profile-photo-imported-label').style.display = 'inline';
+      const _label = document.getElementById('profile-photo-imported-label');
+      if (_label) _label.style.display = 'inline';
       const avatarGrid = document.getElementById('profile-avatar-grid');
       if (avatarGrid) avatarGrid.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
     }
   });
-  document.getElementById('removeProfilePhotoBtn').addEventListener('click', removeProfilePhoto);
-  
+
   const profileMondayUserSelect = document.getElementById('profileMondayUser');
   if (profileMondayUserSelect) {
     const populateMondayUsers = async (preselectedId = null) => {
@@ -822,8 +901,7 @@ function setupEventListeners() {
       const photoEl = document.getElementById('profileHeaderPhoto');
       const profileId = photoEl?.dataset?.profileId;
       if (profileId && state.selectedProfile) {
-        openProfileModal(profileId);
-        switchView('home');
+        window.showProfileSwitchModal();
       }
     }
   });
@@ -836,11 +914,15 @@ function setupEventListeners() {
 function switchView(viewName) {
   console.log('=== switchView appelé avec:', viewName);
 
-  if (viewName === 'home' && window._launcherSession && window._launcherSession.connected) {
-    const sv = document.getElementById('sessionView');
-    const hv = document.getElementById('homeView');
+  if (viewName === 'home') {
     document.querySelectorAll('.view').forEach(v => { v.classList.remove('active'); v.style.display = ''; });
-    if (sv) { sv.style.display = ''; sv.classList.add('active'); }
+    if (window._launcherSession && window._launcherSession.connected) {
+      const sv = document.getElementById('sessionView');
+      if (sv) { sv.style.display = ''; sv.classList.add('active'); }
+    } else {
+      const wv = document.getElementById('waitingView');
+      if (wv) { wv.style.display = 'flex'; wv.classList.add('active'); }
+    }
     return;
   }
 
@@ -5241,17 +5323,37 @@ async function selectLauncherProfile(session) {
       : '?',
     role: session.profileRole || 'user',
     isAdmin: session.profileRole === 'admin',
-    fromLauncher: true
+    fromLauncher: true,
+    avatar: session.profileAvatar || null,
   };
 
-  state.selectedProfile = profile;
-  applyProfileTheme('dark');
-  displayProfileHeader(profile);
+  const bf = (session.appSettings && session.appSettings.backupflow) ? session.appSettings.backupflow : {};
 
+  // Enrichir le profil avec les champs métier backupflow
+  profile.initiales     = bf.initiales     || profile.initiales;
+  profile.ssdPersoPath  = bf.ssdPersoPath  || null;
+  profile.ssdStudioPath = bf.ssdStudioPath || null;
+  profile.mondayUserId  = bf.mondayUserId  || session.profileId || null;
+  profile.mondayMode    = bf.mondayMode    || 'monday';
+  profile.zipNasEnabled = typeof bf.zipNasEnabled === 'boolean' ? bf.zipNasEnabled : false;
+  profile.email         = bf.email         || null;
+  profile.color         = bf.color         || null;
+
+  state.selectedProfile = profile;
+
+  // Propager les chemins SSD dans state.settings (fallback utilisé partout dans le workflow)
+  if (profile.ssdPersoPath)  state.settings.ssdPersoPath  = profile.ssdPersoPath;
+  if (profile.ssdStudioPath) state.settings.ssdStudioPath = profile.ssdStudioPath;
+  if (typeof profile.zipNasEnabled === 'boolean') state.settings.zipNasEnabled = profile.zipNasEnabled;
+
+  // Mettre à jour le champ initiales dans le workflow
   if (profile.initiales) {
     const el = document.getElementById('projectInitiales');
     if (el) { el.value = profile.initiales; state.workflow.initiales = profile.initiales; }
   }
+
+  applyProfileTheme('dark');
+  displayProfileHeader(profile);
 
   updateProjectNamePreview();
   showNotification(`Profil "${profile.name}" chargé via Launcher`, 'success');
@@ -5362,7 +5464,7 @@ function displayProfileHeader(profile) {
   if (!header) return;
   
   // Afficher l'en-tête sauf sur la vue home
-  if (state.currentView !== 'home') {
+  if (state.selectedProfile) {
     header.style.display = 'block';
     
     // Nom du profil
@@ -5379,8 +5481,9 @@ function displayProfileHeader(profile) {
       // Stocker l'ID du profil pour le clic
       photoEl.dataset.profileId = profile.id;
       
-      if (profile.photoPath) {
-        photoEl.style.backgroundImage = `url(file://${profile.photoPath})`;
+      const photoSource = profile.photoPath || profile.avatar || null;
+      if (photoSource) {
+        photoEl.style.backgroundImage = `url(${photoSource})`;
         photoEl.style.backgroundSize = 'cover';
         photoEl.style.backgroundPosition = 'center';
         photoEl.innerHTML = '';

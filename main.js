@@ -365,7 +365,16 @@ async function saveSettings(settings) {
 
 // Configuration
 ipcMain.handle('get-app-version', () => appVersion);
-ipcMain.handle('get-launcher-session', () => global.launcherSession || { connected: false });
+ipcMain.handle('get-launcher-session', async () => {
+  const fresh = await readLauncherSession();
+  global.launcherSession = fresh;
+  return fresh;
+});
+ipcMain.handle('spawn-launcher', () => {
+  const { spawn } = require('child_process');
+  spawn('open', ['-a', 'Launcher'], { detached: true, stdio: 'ignore' });
+  return { ok: true };
+});
 ipcMain.handle('get-settings', async () => {
   return await loadSettings();
 });
