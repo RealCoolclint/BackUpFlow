@@ -3,7 +3,7 @@
 Ce document décrit l'application **BackUpFlow Studio** — version dédiée au workflow de backup vidéo en postproduction — afin qu'un assistant (ex. Claude) puisse proposer des évolutions cohérentes avec l'existant.
 
 **Documents complémentaires** (format aligné avec Launcher) :
-- **BACKUPFLOW_STUDIO_DOCUMENTATION_APPLICATION.md** — Vue d'ensemble, architecture, config, parcours utilisateur, build.
+- **BACKUPFLOW_DOCUMENTATION_APPLICATION.md** — Vue d'ensemble, architecture, config, parcours utilisateur, build, journal des versions.
 - **BACKUPFLOW_STUDIO_DOCUMENTATION_INTERFACE_UX.md** — Design system, palette, composants, écrans, modales.
 
 *Dernière mise à jour : février 2026*

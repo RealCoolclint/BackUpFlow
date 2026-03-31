@@ -2,114 +2,51 @@
    VARIABLES CSS - PALETTE MINIMALISTE (3 COULEURS - DOMINANTE BLEUE)
    ============================================ */
 :root {
-  /* PALETTE LIMITÉE À 3 COULEURS */
-  /* Couleur 1: Bleu (Accent & Actions) */
-  --color-primary: #2563eb;
-  --color-primary-light: #3b82f6;
-  --color-primary-dark: #1e40af;
-  
-  /* Couleur 2: Noir/Gris foncé (Fond sombre & Texte) */
-  --color-dark: #0f172a;
-  --color-dark-light: #1e293b;
-  --color-dark-lighter: #334155;
-  
-  /* Couleur 3: Blanc/Gris clair (Fond clair & Texte clair) */
-  --color-light: #ffffff;
-  --color-light-dark: #f8fafc;
-  --color-light-darker: #f1f5f9;
-  
-  /* Light theme - Texte uniquement en noir */
-  --bg-primary: var(--color-light);
-  --bg-secondary: var(--color-light-dark);
-  --bg-tertiary: var(--color-light-darker);
-  --bg-elevated: var(--color-light);
-  
-  --text-primary: #0f172a;
-  --text-secondary: #0f172a;
-  --text-tertiary: #0f172a;
-  
-  /* Accent = Couleur 1 (Bleu) - SANS DÉGRADÉ */
-  --accent: var(--color-primary);
-  --accent-hover: var(--color-primary-dark);
-  --accent-light: var(--color-primary-light);
-  
-  /* Status = variations de la couleur primaire */
-  --success: var(--color-primary);
-  --success-light: var(--color-primary-light);
-  --danger: var(--color-primary-dark);
-  --danger-light: var(--color-primary-light);
-  --warning: var(--color-primary);
-  --warning-light: var(--color-primary-light);
-  --info: var(--color-primary);
-  --info-light: var(--color-primary-light);
-  
-  /* Borders & Shadows - Utilisant les 3 couleurs */
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
-  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
-  --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
-  --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
-  
-  /* Sidebar - Couleur 2 (Noir/Gris foncé) */
-  --sidebar-bg: var(--color-dark);
-  --sidebar-bg-hover: var(--color-dark-light);
-  --sidebar-text: var(--color-light);
-  --sidebar-text-hover: var(--color-light);
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  
-  /* Radius minimalistes */
-  --radius-sm: 4px;
-  --radius: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
-  --radius-xl: 12px;
-  --radius-full: 9999px;
-  
-  /* Transitions fluides */
+  --bg-primary:    #0a0f1e;
+  --bg-secondary:  #0f172a;
+  --bg-tertiary:   #1e293b;
+  --bg-elevated:   #283548;
+  --text-primary:  #f0f4ff;
+  --text-secondary: rgba(240, 244, 255, 0.6);
+  --text-tertiary: rgba(240, 244, 255, 0.4);
+  --accent:        #2563eb;
+  --accent-hover:  #1d4ed8;
+  --accent-light:  rgba(37, 99, 235, 0.15);
+  --success:       #10b981;
+  --success-light: rgba(16, 185, 129, 0.15);
+  --danger:        #ef4444;
+  --danger-light:  rgba(239, 68, 68, 0.15);
+  --warning:       #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --info:          #3b82f6;
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-light:  rgba(255, 255, 255, 0.05);
+  --radius-sm:     4px;
+  --radius:        6px;
+  --radius-md:     8px;
+  --radius-lg:     16px;
+  --radius-xl:     12px;
+  --radius-full:   9999px;
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition:      250ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dark-theme {
-  /* Dark theme - Texte uniquement en blanc */
-  --bg-primary: var(--color-dark);
-  --bg-secondary: var(--color-dark-light);
-  --bg-tertiary: var(--color-dark-lighter);
-  --bg-elevated: var(--color-dark-light);
-  
-  --text-primary: #ffffff;
-  --text-secondary: #ffffff;
-  --text-tertiary: #ffffff;
-  
-  --accent: var(--color-primary);
-  --accent-hover: var(--color-primary-light);
-  --accent-light: var(--color-primary-dark);
-  
-  --success: var(--color-primary);
-  --success-light: var(--color-primary-dark);
-  --danger: var(--color-primary-dark);
-  --danger-light: var(--color-dark-lighter);
-  --warning: var(--color-primary);
-  --warning-light: var(--color-dark-lighter);
-  --info: var(--color-primary);
-  --info-light: var(--color-dark-lighter);
-  
-  --border: rgba(255, 255, 255, 0.1);
-  --border-light: rgba(255, 255, 255, 0.05);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-  
-  --sidebar-bg: var(--color-dark);
-  --sidebar-bg-hover: var(--color-dark-light);
-  --sidebar-text: var(--color-light);
-  --sidebar-text-hover: var(--color-light);
-  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.3);
+  --shadow:    0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.2);
+  --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -2px rgba(0,0,0,0.3);
+  --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.5), 0 10px 10px -5px rgba(0,0,0,0.3);
+  --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.6);
+  --sidebar-bg:         #0a0f1e;
+  --sidebar-bg-hover:   #0f172a;
+  --sidebar-text:       #f0f4ff;
+  --sidebar-text-hover: #f0f4ff;
+  --sidebar-border:     rgba(255,255,255,0.08);
+  --color-primary:       #2563eb;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark:  #1e40af;
+  --color-dark:          #0a0f1e;
+  --color-dark-light:    #0f172a;
+  --color-dark-lighter:  #1e293b;
+  --color-light:         #f0f4ff;
 }
 
 /* ============================================
@@ -2259,7 +2196,7 @@ body {
   background: var(--bg-tertiary);
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  font-family: 'SF Mono', 'Monaco', monospace;
+  font-family: inherit;
   font-size: 0.85em;
   margin-top: 8px;
 }
@@ -2291,7 +2228,7 @@ body {
 
 .compression-progress-percent {
   color: var(--accent);
-  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-family: inherit;
   font-weight: 700;
 }
 
@@ -2391,7 +2328,7 @@ body {
   font-size: 1.2em;
   font-weight: 700;
   color: var(--accent);
-  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-family: inherit;
 }
 
 .progress-status-item.handbrake-info {
@@ -3879,7 +3816,7 @@ body {
   margin-right: 6px;
 }
 .error-technical code {
-  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-family: inherit;
   color: var(--text-primary);
   font-size: 0.95em;
 }

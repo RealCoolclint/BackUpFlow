@@ -5498,6 +5498,7 @@ function displayProfileHeader(profile) {
 }
 
 const AVATARS = Array.from({length: 28}, (_, i) => `avatar_${String(i+1).padStart(2,'0')}`);
+const AVATAR_BASE_URL = 'https://raw.githubusercontent.com/RealCoolclint/tranquility-avatars/main/';
 
 function openProfileModal(profileId = null) {
   const modal = document.getElementById('profileModal');
@@ -5542,7 +5543,7 @@ function openProfileModal(profileId = null) {
         if (avatarGrid) {
           avatarGrid.innerHTML = AVATARS.map(id => `
             <div class="avatar-option ${(profile?.avatar === id) ? 'selected' : ''}" data-avatar="${id}">
-              <img src="assets/avatars/${id}.jpeg" style="width:48px;height:48px;border-radius:50%;object-fit:cover;">
+              <img src="${AVATAR_BASE_URL}${id}.jpeg" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" onerror="this.src='assets/avatars/${id}.jpeg'">
             </div>
           `).join('');
           avatarGrid.querySelectorAll('.avatar-option').forEach(el => {
@@ -5668,7 +5669,7 @@ async function saveProfile() {
       theme: theme || 'dark',
       zipNasEnabled: document.getElementById('profileZipNasEnabled')?.checked || false,
       isAdmin: document.getElementById('profileIsAdmin')?.checked || false,
-      avatar: document.getElementById('profile-avatar-grid')?.querySelector('.avatar-option.selected')?.dataset?.avatar || null,
+      avatar: document.getElementById('profile-avatar-grid')?.querySelector('.avatar-option.selected')?.dataset?.avatar ? AVATAR_BASE_URL + document.getElementById('profile-avatar-grid').querySelector('.avatar-option.selected').dataset.avatar + '.jpeg' : null,
     };
     
     if (profileId) {

@@ -1,8 +1,8 @@
-# BackUpFlow Studio – Documentation application
+# BackUpFlow – Documentation application
 
 Application Electron macOS qui automatise le workflow de backup, stockage, compression et archivage de fichiers vidéo en postproduction · Cellule Vidéo · l'Étudiant.
 
-*Documentation alignée sur la version stable actuelle. Dernière mise à jour : février 2026.*
+*Documentation alignée sur la version stable actuelle. Dernière mise à jour : mars 2026.*
 
 ---
 
@@ -28,9 +28,9 @@ Application Electron macOS qui automatise le workflow de backup, stockage, compr
 
 ## 2. Architecture
 
-- **main.js** : fenêtre (largeur **1400** px, hauteur 900, `titleBarStyle: 'hidden'`, `frame: false`), IPC : `get-settings`, `save-settings`, `check-handbrake`, `detect-sources`, `scan-directory`, `calculate-checksum`, `verify-integrity`, `generate-project-name`, `get-next-letter`, `parse-project-name`, `get-format-description`, `check-disk-space`, `get-file-size`, `select-folder`, `execute-backup-workflow`, `get-history`, `clear-history`, `get-project-metadata`, `list-projects`, `test-nas-connection`, `get-mounted-smb-path`, `check-and-connect-vpn`, `mount-smb-share`, `get-profiles`, `get-profile`, `create-profile`, `update-profile`, `delete-profile`, `select-profile-photo`, `list-celebration-gifs`, `open-external-url`, `gofile-upload`, `is-workflow-running`, **`monday-get-projects`**, **`monday-test-connection`**, **`monday-get-column-ids`**, **`monday-update-item`**, **`archive-profile`**, **`restore-profile`**, **`send-workflow-success-mail`**, **`send-workflow-stopped-mail`**, **`send-error-report-mail`**, **`send-batch-summary-mail`**, **`test-resend-connection`** ; événements : `workflow-progress`, `gofile-progress`, `confirm-quit-during-workflow` ; contrôles fenêtre : `window-minimize`, `window-maximize`, `window-close`, `app-quit`, `force-quit`.
+- **main.js** : fenêtre (largeur **1400** px, hauteur 900, `titleBarStyle: 'hidden'`, `frame: false`), IPC : `get-settings`, `save-settings`, `check-handbrake`, `detect-sources`, `scan-directory`, `calculate-checksum`, `verify-integrity`, `generate-project-name`, `get-next-letter`, `parse-project-name`, `get-format-description`, `check-disk-space`, `get-file-size`, `select-folder`, `execute-backup-workflow`, `get-history`, `clear-history`, `get-project-metadata`, `list-projects`, `test-nas-connection`, `get-mounted-smb-path`, `check-and-connect-vpn`, `mount-smb-share`, `get-profiles`, `get-profile`, `create-profile`, `update-profile`, `delete-profile`, `select-profile-photo`, `list-celebration-gifs`, `open-external-url`, `gofile-upload`, `is-workflow-running`, **`get-launcher-session`**, **`spawn-launcher`**, **`monday-get-projects`**, **`monday-test-connection`**, **`monday-get-column-ids`**, **`monday-update-item`**, **`archive-profile`**, **`restore-profile`**, **`send-workflow-success-mail`**, **`send-workflow-stopped-mail`**, **`send-error-report-mail`**, **`send-batch-summary-mail`**, **`test-resend-connection`** ; événements : `workflow-progress`, `gofile-progress`, `confirm-quit-during-workflow` ; contrôles fenêtre : `window-minimize`, `window-maximize`, `window-close`, `app-quit`, `force-quit`.
 - **preload.js** : contextBridge → `window.electronAPI` (toutes les méthodes listées ci-dessus).
-- **modules/** : nomenclature.js (noms de projet, lettres), import.js (sources, scan avec filtrage configurable par extensions/taille/prefixe, checksums), storage.js (copie SSD avec noms pre-calcules, ZIP, normalisation macOS NFD/NFC), compression.js (HandBrakeCLI, ZIP NAS, nettoyage dossier temp), upload.js (SMB/SFTP), metadata.js (historique, profils avec archivage/email/isAdmin, metadonnees), nas-connector.js (polling VPN, auto-mount NAS, diagnostic acces/ecriture/espace), mailer.js (notifications mail via Resend), progress-tracker.js.
+- **modules/** : nomenclature.js (noms de projet, lettres), import.js (sources, scan avec filtrage configurable par extensions/taille/prefixe, checksums), storage.js (copie SSD avec noms pre-calcules, ZIP, normalisation macOS NFD/NFC), compression.js (HandBrakeCLI, ZIP NAS, nettoyage dossier temp), upload.js (SMB/SFTP), metadata.js (historique, profils avec archivage/email/isAdmin, metadonnees), nas-connector.js (polling VPN, auto-mount NAS, diagnostic acces/ecriture/espace), mailer.js (notifications mail via Resend), progress-tracker.js, **session-reader.js** (lecture `~/Library/Application Support/tranquility-suite/session.json`, session Tranquility / Launcher).
 - **Renderer** : index.html (splash, bannière profil, vues Accueil/Workflow/Queue/Paramètres/Historique/WorkflowRunning/WorkflowCompleted, modales profil, espace disque, quit confirm), renderer.js (logique UI, état, événements), styles.css.
 
 ---
@@ -173,7 +173,7 @@ Le main envoie des événements `workflow-progress` avec :
 ## 7. Structure des dossiers (source)
 
 ```
-BackUpFlow Studio/
+BackUpFlow/
 ├── package.json
 ├── main.js
 ├── preload.js
@@ -185,7 +185,7 @@ BackUpFlow Studio/
 ├── ETAT_DES_LIEUX.md
 ├── RESOLUTION_PROBLEMES.md
 ├── BACKUPFLOW_STUDIO_DOCUMENTATION.md
-├── BACKUPFLOW_STUDIO_DOCUMENTATION_APPLICATION.md
+├── BACKUPFLOW_DOCUMENTATION_APPLICATION.md
 ├── BACKUPFLOW_STUDIO_DOCUMENTATION_INTERFACE_UX.md
 ├── data/                        # Données persistantes (profiles, settings, history, metadata)
 ├── assets/
@@ -205,15 +205,24 @@ BackUpFlow Studio/
     ├── metadata.js
     ├── mailer.js             # Notifications mail via Resend
     ├── nas-connector.js
-    └── progress-tracker.js
+    ├── progress-tracker.js
+    └── session-reader.js     # Session Tranquility / Launcher (session.json)
 ```
 
 ---
 
 ## 8. Version et journal des versions
 
-- **Version affichée** : calculée dans **index.html** (script inline `window.APP_VERSION`, format **V1.DD.MM.AA**), utilisée par `getAppVersion()` dans **renderer.js**, appliquée via `applyVersionToUI()` (splash + header). Affichée sur le **splash** (sous le logo) et dans la **top bar** (à droite du logo, cliquable → modale changelog).
+- **Version affichée** : calculée dans **index.html** (script inline `window.APP_VERSION`, format **V1.DD.MM.AA**), utilisée par `getAppVersion()` dans **renderer.js**, appliquée via `applyVersionToUI()` (splash + header). Affichée sur le **splash** (sous le logo) et dans la **top bar** (à droite du logo, cliquable → modale changelog). Le **package.json** porte également un numéro de version aligné (ex. `1.29.03.26`).
 - **Changelog** : objet `CHANGELOG` dans `renderer.js` (liste des versions avec date et notes). Modale `#changelogModal` accessible par clic sur le numéro de version ou touche Escape pour fermer.
+
+### V1.1 (v1.29.03.26 — 29 mars 2026)
+
+- Tranquility Cloud intégré — session.json V2, lecture complète de appSettings.backupflow
+- selectLauncherProfile() corrigé — tous les champs métier injectés dans state et settings
+- Header profil actif (modèle Adobe CC) — avatar, nom, initiales, changement de profil
+- Avatars universels via GitHub (tranquility-avatars) — URL raw, CSP mise à jour
+- Grille de sélection équipe avec avatars
 
 ---
 

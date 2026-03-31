@@ -1,6 +1,6 @@
 {
   "name": "backupflow",
-  "version": "1.29.03.26",
+  "version": "1.31.03.26",
   "description": "Application macOS pour automatiser le workflow de backup, stockage, compression et archivage de fichiers vidéo",
   "main": "main.js",
   "scripts": {
